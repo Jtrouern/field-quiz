@@ -1,0 +1,1079 @@
+{
+ "title": "Queensland Snake ID",
+ "subtitle": "Venomous & harmless snakes and legless lizards",
+ "intro": "Real photos from iNaturalist observers in Queensland. Decide whether it's dangerous, then name the species.",
+ "fieldRule": "Field rule: in Australia, treat any snake you can't identify for certain as dangerous.",
+ "place": {
+  "id": 7308,
+  "name": "Queensland, Australia"
+ },
+ "fallbackPlace": {
+  "id": 6744,
+  "name": "Australia"
+ },
+ "groupBy": "custom",
+ "groupNoun": "danger level",
+ "groupQuestion": "Dangerous or harmless?",
+ "groups": [
+  {
+   "name": "Dangerously venomous",
+   "tone": "danger",
+   "answer": "Dangerous"
+  },
+  {
+   "name": "Venomous",
+   "tone": "warn",
+   "answer": "Venomous, lower risk"
+  },
+  {
+   "name": "Mildly venomous",
+   "tone": "mild",
+   "answer": "Venomous, lower risk"
+  },
+  {
+   "name": "Sea snake",
+   "tone": "sea",
+   "answer": "Dangerous"
+  },
+  {
+   "name": "Rear-fanged, mild",
+   "tone": "mild",
+   "answer": "Venomous, lower risk"
+  },
+  {
+   "name": "Harmless snake",
+   "tone": "safe",
+   "answer": "Harmless"
+  },
+  {
+   "name": "Legless lizard",
+   "tone": "safe",
+   "answer": "Harmless"
+  }
+ ],
+ "answers": {
+  "Dangerous": "Could kill a person",
+  "Venomous, lower risk": "Small elapids and rear-fanged snakes",
+  "Harmless": "Non-venomous snake or legless lizard"
+ },
+ "tags": {
+  "label": "Where",
+  "values": {
+   "SE": "South-east",
+   "NQ": "Central & north coast",
+   "CY": "Cape York & Torres Strait",
+   "W": "Inland & outback",
+   "SEA": "Sea"
+  }
+ },
+ "species": [
+  {
+   "name": "Oxyuranus scutellatus",
+   "common": "Coastal Taipan",
+   "group": "Dangerously venomous",
+   "note": "Long, pale-faced head; uniform brown with a paler snout and orange-tinged eyes. Large, fast and nervous.",
+   "tags": [
+    "SE",
+    "NQ",
+    "CY"
+   ],
+   "look": "brown"
+  },
+  {
+   "name": "Oxyuranus microlepidotus",
+   "common": "Inland Taipan",
+   "group": "Dangerously venomous",
+   "note": "Dark glossy head (darker in winter); scales edged dark, giving a herringbone look. Channel Country of the far south-west.",
+   "tags": [
+    "W"
+   ],
+   "look": "brown"
+  },
+  {
+   "name": "Pseudonaja textilis",
+   "common": "Eastern Brown Snake",
+   "group": "Dangerously venomous",
+   "note": "Slender, plain tan to dark brown; cream belly with orange or pink spots. Juveniles banded with a black head and nape.",
+   "tags": [
+    "SE",
+    "NQ",
+    "W"
+   ],
+   "look": "brown"
+  },
+  {
+   "name": "Pseudonaja mengdeni",
+   "common": "Western Brown Snake (Gwardar)",
+   "group": "Dangerously venomous",
+   "note": "Very variable: plain, banded or black-headed. Dry inland country.",
+   "tags": [
+    "W"
+   ],
+   "look": "brown"
+  },
+  {
+   "name": "Pseudonaja aspidorhyncha",
+   "common": "Strap-snouted Brown Snake",
+   "group": "Dangerously venomous",
+   "note": "Squarish snout; inland plains and downs. Often dark on the head and neck.",
+   "tags": [
+    "W"
+   ],
+   "look": "brown"
+  },
+  {
+   "name": "Pseudonaja guttata",
+   "common": "Speckled Brown Snake",
+   "group": "Dangerously venomous",
+   "note": "Yellow-brown to orange with dark-edged scales forming speckles. Black-soil plains.",
+   "tags": [
+    "W"
+   ],
+   "look": "brown"
+  },
+  {
+   "name": "Pseudonaja ingrami",
+   "common": "Ingram's Brown Snake",
+   "group": "Dangerously venomous",
+   "note": "Robust, glossy brown with a darker head. Cracking clays of the Barkly Tableland.",
+   "tags": [
+    "W"
+   ],
+   "look": "brown"
+  },
+  {
+   "name": "Pseudonaja nuchalis",
+   "common": "Northern Brown Snake",
+   "group": "Dangerously venomous",
+   "note": "Variable; often a dark nape band or herringbone pattern. Tropical woodland and Gulf country.",
+   "tags": [
+    "W",
+    "CY"
+   ],
+   "look": "brown"
+  },
+  {
+   "name": "Acanthophis antarcticus",
+   "common": "Common Death Adder",
+   "group": "Dangerously venomous",
+   "note": "Thick body, broad triangular head, thin pale tail tip used as a lure. Banded grey, brown or red. Lies still in leaf litter.",
+   "tags": [
+    "SE",
+    "NQ",
+    "W"
+   ],
+   "look": "adder"
+  },
+  {
+   "name": "Acanthophis praelongus",
+   "common": "Northern Death Adder",
+   "group": "Dangerously venomous",
+   "note": "Rough-looking scales and raised ridges over the eyes. Tropical north.",
+   "tags": [
+    "NQ",
+    "CY"
+   ],
+   "look": "adder"
+  },
+  {
+   "name": "Acanthophis rugosus",
+   "common": "Rough-scaled Death Adder",
+   "group": "Dangerously venomous",
+   "note": "Stout and banded with rough, keeled scales. Barkly Tableland and the Gulf country of north-west Queensland.",
+   "tags": [
+    "W"
+   ],
+   "look": "adder"
+  },
+  {
+   "name": "Pseudechis australis",
+   "common": "Mulga Snake (King Brown)",
+   "group": "Dangerously venomous",
+   "note": "Large and heavy with a broad head. Each scale two-toned, giving a netted look. Absent from the far south-east.",
+   "tags": [
+    "W",
+    "NQ",
+    "CY"
+   ],
+   "look": "black"
+  },
+  {
+   "name": "Pseudechis porphyriacus",
+   "common": "Red-bellied Black Snake",
+   "group": "Dangerously venomous",
+   "note": "Glossy black back, red to pink lower flanks. Usually near water along the east coast.",
+   "tags": [
+    "SE",
+    "NQ"
+   ],
+   "look": "black"
+  },
+  {
+   "name": "Pseudechis guttatus",
+   "common": "Spotted Black Snake",
+   "group": "Dangerously venomous",
+   "note": "Black, grey or cream-spotted; blue-grey belly. Inland of the Great Dividing Range.",
+   "tags": [
+    "SE",
+    "W"
+   ],
+   "look": "black"
+  },
+  {
+   "name": "Pseudechis colletti",
+   "common": "Collett's Snake",
+   "group": "Dangerously venomous",
+   "note": "Dark with bold pink-orange to cream bands or blotches. Black-soil downs of central-west Queensland only.",
+   "tags": [
+    "W"
+   ],
+   "look": "black"
+  },
+  {
+   "name": "Pseudechis papuanus",
+   "common": "Papuan Black Snake",
+   "group": "Dangerously venomous",
+   "note": "Plain black. Torres Strait islands near New Guinea.",
+   "tags": [
+    "CY"
+   ],
+   "look": "black"
+  },
+  {
+   "name": "Tropidechis carinatus",
+   "common": "Rough-scaled Snake",
+   "group": "Dangerously venomous",
+   "note": "Strongly keeled scales; olive-brown with narrow dark crossbands. Easily mistaken for the harmless Keelback, but has no loreal scale.",
+   "tags": [
+    "SE",
+    "NQ"
+   ],
+   "look": "keel"
+  },
+  {
+   "name": "Notechis scutatus",
+   "common": "Tiger Snake",
+   "group": "Dangerously venomous",
+   "note": "Yellowish crossbands on dark olive, or plain. Flattens its neck. Border ranges and Granite Belt.",
+   "tags": [
+    "SE"
+   ],
+   "look": "banded"
+  },
+  {
+   "name": "Hoplocephalus stephensii",
+   "common": "Stephens' Banded Snake",
+   "group": "Dangerously venomous",
+   "note": "Dark and cream bands; barred lips. Climbs in rainforest and tall forest.",
+   "tags": [
+    "SE"
+   ],
+   "look": "banded"
+  },
+  {
+   "name": "Hoplocephalus bitorquatus",
+   "common": "Pale-headed Snake",
+   "group": "Dangerously venomous",
+   "note": "Grey body; pale band behind the head edged with black. Climbs in woodland trees.",
+   "tags": [
+    "SE",
+    "NQ",
+    "W"
+   ],
+   "look": "banded"
+  },
+  {
+   "name": "Cryptophis nigrescens",
+   "common": "Eastern Small-eyed Snake",
+   "group": "Dangerously venomous",
+   "note": "Glossy black, tiny eyes, pink to cream belly. Nocturnal in east-coast forest.",
+   "tags": [
+    "SE",
+    "NQ"
+   ],
+   "look": "black"
+  },
+  {
+   "name": "Pseudechis pailsei",
+   "common": "Dwarf Mulga Snake",
+   "group": "Dangerously venomous",
+   "note": "A smaller relative of the Mulga Snake with the same netted, two-toned scales. Rocky country of the north-west.",
+   "tags": [
+    "W"
+   ],
+   "look": "black"
+  },
+  {
+   "name": "Pseudonaja modesta",
+   "common": "Ringed Brown Snake",
+   "group": "Venomous",
+   "note": "Small. Brown with a black head blotch and narrow dark rings that fade with age.",
+   "tags": [
+    "W"
+   ],
+   "look": "brown"
+  },
+  {
+   "name": "Denisonia devisi",
+   "common": "De Vis' Banded Snake",
+   "group": "Venomous",
+   "note": "Stout; yellow-brown with ragged dark bands; barred lips. Floodplains.",
+   "tags": [
+    "W",
+    "SE"
+   ],
+   "look": "adder"
+  },
+  {
+   "name": "Denisonia maculata",
+   "common": "Ornamental Snake",
+   "group": "Venomous",
+   "note": "Brown with dark-edged white lip bars. Gilgai wetlands of central Queensland; threatened.",
+   "tags": [
+    "NQ"
+   ],
+   "look": "adder"
+  },
+  {
+   "name": "Demansia psammophis",
+   "common": "Yellow-faced Whipsnake",
+   "group": "Venomous",
+   "note": "Slender, big eyes; pale-edged dark comma below the eye. Active by day and very fast.",
+   "tags": [
+    "SE",
+    "NQ",
+    "W"
+   ],
+   "look": "whip"
+  },
+  {
+   "name": "Demansia papuensis",
+   "common": "Greater Black Whipsnake",
+   "group": "Venomous",
+   "note": "Large, dark grey to black, with a long thin tail. Tropical woodland.",
+   "tags": [
+    "NQ",
+    "CY"
+   ],
+   "look": "whip"
+  },
+  {
+   "name": "Demansia vestigiata",
+   "common": "Lesser Black Whipsnake",
+   "group": "Venomous",
+   "note": "Dark grey-brown with fine flecks; slender with big eyes.",
+   "tags": [
+    "NQ",
+    "CY"
+   ],
+   "look": "whip"
+  },
+  {
+   "name": "Demansia torquata",
+   "common": "Collared Whipsnake",
+   "group": "Venomous",
+   "note": "Dark collar across the neck; pale-edged eye marking.",
+   "tags": [
+    "NQ",
+    "W"
+   ],
+   "look": "whip"
+  },
+  {
+   "name": "Hemiaspis signata",
+   "common": "Black-bellied Swamp Snake",
+   "group": "Venomous",
+   "note": "Olive to black with two thin pale lines on the face; dark belly. Near water.",
+   "tags": [
+    "SE",
+    "NQ"
+   ],
+   "look": "swamp"
+  },
+  {
+   "name": "Hemiaspis damelii",
+   "common": "Grey Snake",
+   "group": "Venomous",
+   "note": "Grey above; young have a black head. Floodplain country; threatened.",
+   "tags": [
+    "SE",
+    "W"
+   ],
+   "look": "swamp"
+  },
+  {
+   "name": "Cryptophis boschmai",
+   "common": "Carpentaria Snake",
+   "group": "Venomous",
+   "note": "Brown with paler lips; small and nocturnal.",
+   "tags": [
+    "NQ",
+    "CY"
+   ],
+   "look": "black"
+  },
+  {
+   "name": "Cryptophis nigrostriatus",
+   "common": "Black-striped Snake",
+   "group": "Venomous",
+   "note": "Pink-red to salmon with a black stripe down the back.",
+   "tags": [
+    "NQ",
+    "CY"
+   ],
+   "look": "stripe"
+  },
+  {
+   "name": "Suta suta",
+   "common": "Curl Snake",
+   "group": "Venomous",
+   "note": "Dark hood on the head, pale-edged eye line. Coils tightly when threatened.",
+   "tags": [
+    "W"
+   ],
+   "look": "hooded"
+  },
+  {
+   "name": "Suta dwyeri",
+   "common": "Dwyer's Snake",
+   "group": "Venomous",
+   "note": "Black cap on the head and nape; reddish-brown body. Nocturnal.",
+   "tags": [
+    "SE",
+    "W"
+   ],
+   "look": "hooded"
+  },
+  {
+   "name": "Cacophis squamulosus",
+   "common": "Golden-crowned Snake",
+   "group": "Mildly venomous",
+   "note": "Yellow stripe along each side of the head forming a crown; pink-orange belly with a dark midline.",
+   "tags": [
+    "SE"
+   ],
+   "look": "crowned"
+  },
+  {
+   "name": "Cacophis harriettae",
+   "common": "White-crowned Snake",
+   "group": "Mildly venomous",
+   "note": "Black with a bright white band around the back of the head.",
+   "tags": [
+    "SE",
+    "NQ"
+   ],
+   "look": "crowned"
+  },
+  {
+   "name": "Cacophis krefftii",
+   "common": "Dwarf Crowned Snake",
+   "group": "Mildly venomous",
+   "note": "Tiny; black with a yellow-cream band on the nape and a yellow belly.",
+   "tags": [
+    "SE"
+   ],
+   "look": "crowned"
+  },
+  {
+   "name": "Cacophis churchilli",
+   "common": "Northern Dwarf Crowned Snake",
+   "group": "Mildly venomous",
+   "note": "Tiny; dark grey with a pale nape band. Wet Tropics.",
+   "tags": [
+    "NQ"
+   ],
+   "look": "crowned"
+  },
+  {
+   "name": "Furina diadema",
+   "common": "Red-naped Snake",
+   "group": "Mildly venomous",
+   "note": "Dark-edged reddish scales; glossy black head with a red-orange nape patch.",
+   "tags": [
+    "SE",
+    "NQ",
+    "W"
+   ],
+   "look": "naped"
+  },
+  {
+   "name": "Furina ornata",
+   "common": "Orange-naped Snake",
+   "group": "Mildly venomous",
+   "note": "Like the Red-naped Snake but with an orange nape band. Northern and inland.",
+   "tags": [
+    "NQ",
+    "W"
+   ],
+   "look": "naped"
+  },
+  {
+   "name": "Furina barnardi",
+   "common": "Moon Snake",
+   "group": "Mildly venomous",
+   "note": "Yellow-brown with dark-edged scales and a pale nape band.",
+   "tags": [
+    "NQ"
+   ],
+   "look": "naped"
+  },
+  {
+   "name": "Furina dunmalli",
+   "common": "Dunmall's Snake",
+   "group": "Mildly venomous",
+   "note": "Grey to black with pale lips. Brigalow belt; threatened.",
+   "tags": [
+    "SE"
+   ],
+   "look": "naped"
+  },
+  {
+   "name": "Furina tristis",
+   "common": "Brown-headed Snake",
+   "group": "Mildly venomous",
+   "note": "Dark brown with a pale nape band. Cape York.",
+   "tags": [
+    "CY"
+   ],
+   "look": "naped"
+  },
+  {
+   "name": "Vermicella annulata",
+   "common": "Bandy-bandy",
+   "group": "Mildly venomous",
+   "note": "Bold black and white rings. Lifts its body in stiff loops when threatened.",
+   "tags": [
+    "SE",
+    "NQ",
+    "W"
+   ],
+   "look": "banded"
+  },
+  {
+   "name": "Brachyurophis australis",
+   "common": "Coral Snake",
+   "group": "Mildly venomous",
+   "note": "Coral-pink to orange with narrow pale-edged bands; black bands on head and neck; upturned snout.",
+   "tags": [
+    "SE",
+    "W"
+   ],
+   "look": "banded"
+  },
+  {
+   "name": "Antaioserpens albiceps",
+   "common": "Robust Burrowing Snake",
+   "group": "Mildly venomous",
+   "note": "Reddish-brown with a darker head. Burrows; rarely seen.",
+   "tags": [
+    "NQ"
+   ],
+   "look": "burrowing"
+  },
+  {
+   "name": "Aipysurus laevis",
+   "common": "Olive Sea Snake",
+   "group": "Sea snake",
+   "note": "Large, olive-brown above, cream below. Curious around divers on the Great Barrier Reef.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "sea"
+  },
+  {
+   "name": "Aipysurus duboisii",
+   "common": "Dubois' Sea Snake",
+   "group": "Sea snake",
+   "note": "Pinkish-olive with dark-edged scales. Reef flats.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "sea"
+  },
+  {
+   "name": "Hydrophis platurus",
+   "common": "Yellow-bellied Sea Snake",
+   "group": "Sea snake",
+   "note": "Black back, yellow belly, spotted paddle tail. Open ocean; often washes up on beaches.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "sea"
+  },
+  {
+   "name": "Hydrophis elegans",
+   "common": "Elegant Sea Snake",
+   "group": "Sea snake",
+   "note": "Long body with a small head; banded. Turbid inshore water.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "sea"
+  },
+  {
+   "name": "Hydrophis major",
+   "common": "Olive-headed Sea Snake",
+   "group": "Sea snake",
+   "note": "Olive head with broad dark bands on the body.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "sea"
+  },
+  {
+   "name": "Hydrophis stokesii",
+   "common": "Stokes' Sea Snake",
+   "group": "Sea snake",
+   "note": "Very thick-bodied; variable bands.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "sea"
+  },
+  {
+   "name": "Hydrophis peronii",
+   "common": "Horned Sea Snake",
+   "group": "Sea snake",
+   "note": "Spiny projections above the eyes.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "sea"
+  },
+  {
+   "name": "Hydrophis kingii",
+   "common": "Spectacled Sea Snake",
+   "group": "Sea snake",
+   "note": "Dark head with pale markings like spectacles.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "sea"
+  },
+  {
+   "name": "Hydrophis curtus",
+   "common": "Spine-bellied Sea Snake",
+   "group": "Sea snake",
+   "note": "Short and stout with enlarged keeled belly scales.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "sea"
+  },
+  {
+   "name": "Hydrophis ocellatus",
+   "common": "Spotted Sea Snake",
+   "group": "Sea snake",
+   "note": "Pale with dark bands or rings of spots. Reef and inshore waters.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "sea"
+  },
+  {
+   "name": "Emydocephalus annulatus",
+   "common": "Turtle-headed Sea Snake",
+   "group": "Sea snake",
+   "note": "Blunt, turtle-like head. Often banded black and cream; eats fish eggs.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "sea"
+  },
+  {
+   "name": "Boiga irregularis",
+   "common": "Brown Tree Snake",
+   "group": "Rear-fanged, mild",
+   "note": "Big eyes with vertical pupils, bulbous head, thin neck; banded brown or red and cream. Nocturnal and quick to strike.",
+   "tags": [
+    "SE",
+    "NQ",
+    "CY"
+   ],
+   "look": "treesnake"
+  },
+  {
+   "name": "Cerberus australis",
+   "common": "Bockadam",
+   "group": "Rear-fanged, mild",
+   "note": "Eyes on top of the head. Mangrove mudflats.",
+   "tags": [
+    "NQ",
+    "CY"
+   ],
+   "look": "water"
+  },
+  {
+   "name": "Pseudoferania polylepis",
+   "common": "Macleay's Water Snake",
+   "group": "Rear-fanged, mild",
+   "note": "Olive-brown with small upward-facing eyes. Freshwater.",
+   "tags": [
+    "NQ",
+    "CY"
+   ],
+   "look": "water"
+  },
+  {
+   "name": "Fordonia leucobalia",
+   "common": "White-bellied Mangrove Snake",
+   "group": "Rear-fanged, mild",
+   "note": "Very variable colour; white belly. Eats crabs in mangroves.",
+   "tags": [
+    "NQ",
+    "CY"
+   ],
+   "look": "water"
+  },
+  {
+   "name": "Myron richardsonii",
+   "common": "Richardson's Mangrove Snake",
+   "group": "Rear-fanged, mild",
+   "note": "Small and grey-banded. Mangroves.",
+   "tags": [
+    "CY"
+   ],
+   "look": "water"
+  },
+  {
+   "name": "Tropidonophis mairii",
+   "common": "Keelback",
+   "group": "Harmless snake",
+   "note": "Keeled scales like the dangerous Rough-scaled Snake, but has a loreal scale between eye and nostril. Olive-brown with dark flecks; near water; eats cane toads.",
+   "tags": [
+    "SE",
+    "NQ",
+    "CY"
+   ],
+   "look": "keel"
+  },
+  {
+   "name": "Dendrelaphis punctulatus",
+   "common": "Common Tree Snake",
+   "group": "Harmless snake",
+   "note": "Very slender with huge eyes; green, olive, black or blue above with a yellow throat. Shows blue skin when it inflates its neck.",
+   "tags": [
+    "SE",
+    "NQ",
+    "CY"
+   ],
+   "look": "treesnake"
+  },
+  {
+   "name": "Dendrelaphis calligaster",
+   "common": "Northern Tree Snake",
+   "group": "Harmless snake",
+   "note": "Slender and brown above with a dark stripe through the eye; pale belly.",
+   "tags": [
+    "NQ",
+    "CY"
+   ],
+   "look": "treesnake"
+  },
+  {
+   "name": "Stegonotus australis",
+   "common": "Slaty-grey Snake",
+   "group": "Harmless snake",
+   "note": "Glossy slate-grey with a white belly. Bites readily but is harmless.",
+   "tags": [
+    "NQ",
+    "CY"
+   ],
+   "look": "black"
+  },
+  {
+   "name": "Acrochordus granulatus",
+   "common": "Little File Snake",
+   "group": "Harmless snake",
+   "note": "Loose, granular skin; banded. Estuaries and coastal water.",
+   "tags": [
+    "NQ",
+    "CY",
+    "SEA"
+   ],
+   "look": "water"
+  },
+  {
+   "name": "Acrochordus arafurae",
+   "common": "Arafura File Snake",
+   "group": "Harmless snake",
+   "note": "Baggy, rough skin. Freshwater billabongs and rivers.",
+   "tags": [
+    "CY"
+   ],
+   "look": "water"
+  },
+  {
+   "name": "Morelia spilota",
+   "common": "Carpet Python",
+   "group": "Harmless snake",
+   "note": "Heat-sensing pits along the lips; blotched or banded pattern. Large; common in roofs and sheds.",
+   "tags": [
+    "SE",
+    "NQ",
+    "CY",
+    "W"
+   ],
+   "look": "python"
+  },
+  {
+   "name": "Morelia viridis",
+   "common": "Green Python",
+   "group": "Harmless snake",
+   "note": "Adults bright green; young yellow or red. Coils over a branch. Iron and McIlwraith Ranges.",
+   "tags": [
+    "CY"
+   ],
+   "look": "python"
+  },
+  {
+   "name": "Simalia kinghorni",
+   "common": "Scrub Python",
+   "group": "Harmless snake",
+   "note": "Australia's longest snake; iridescent with zigzag patterns and large head scales.",
+   "tags": [
+    "NQ",
+    "CY"
+   ],
+   "look": "python"
+  },
+  {
+   "name": "Liasis fuscus",
+   "common": "Water Python",
+   "group": "Harmless snake",
+   "note": "Iridescent dark brown to black above, yellow below. Near water.",
+   "tags": [
+    "NQ",
+    "CY"
+   ],
+   "look": "python"
+  },
+  {
+   "name": "Liasis olivaceus",
+   "common": "Olive Python",
+   "group": "Harmless snake",
+   "note": "Large, plain olive-brown. Rocky country of the north-west.",
+   "tags": [
+    "W",
+    "NQ"
+   ],
+   "look": "python"
+  },
+  {
+   "name": "Aspidites melanocephalus",
+   "common": "Black-headed Python",
+   "group": "Harmless snake",
+   "note": "Glossy black head and neck; banded body; no heat pits.",
+   "tags": [
+    "NQ",
+    "CY",
+    "W"
+   ],
+   "look": "python"
+  },
+  {
+   "name": "Aspidites ramsayi",
+   "common": "Woma",
+   "group": "Harmless snake",
+   "note": "Banded orange-brown with dark patches above the eyes. Sandy inland country.",
+   "tags": [
+    "W"
+   ],
+   "look": "python"
+  },
+  {
+   "name": "Antaresia maculosa",
+   "common": "Spotted Python",
+   "group": "Harmless snake",
+   "note": "Small python with dark irregular blotches on a pale ground. Rocky outcrops and caves.",
+   "tags": [
+    "SE",
+    "NQ",
+    "CY"
+   ],
+   "look": "python"
+  },
+  {
+   "name": "Antaresia childreni",
+   "common": "Children's Python",
+   "group": "Harmless snake",
+   "note": "Small and brown with faded blotches.",
+   "tags": [
+    "CY",
+    "W"
+   ],
+   "look": "python"
+  },
+  {
+   "name": "Antaresia stimsoni",
+   "common": "Stimson's Python",
+   "group": "Harmless snake",
+   "note": "Small, with bold reddish blotches on cream.",
+   "tags": [
+    "W"
+   ],
+   "look": "python"
+  },
+  {
+   "name": "Anilios ligatus",
+   "common": "Robust Blind Snake",
+   "group": "Harmless snake",
+   "note": "Worm-like; tiny eye spots, blunt head and a spine-tipped tail.",
+   "tags": [
+    "SE",
+    "NQ",
+    "W"
+   ],
+   "look": "blind"
+  },
+  {
+   "name": "Anilios nigrescens",
+   "common": "Blackish Blind Snake",
+   "group": "Harmless snake",
+   "note": "Worm-like; dark purplish-grey above, pink below.",
+   "tags": [
+    "SE"
+   ],
+   "look": "blind"
+  },
+  {
+   "name": "Anilios wiedii",
+   "common": "Brown-snouted Blind Snake",
+   "group": "Harmless snake",
+   "note": "Small and slender with a brownish snout.",
+   "tags": [
+    "SE",
+    "NQ"
+   ],
+   "look": "blind"
+  },
+  {
+   "name": "Indotyphlops braminus",
+   "common": "Flowerpot Blind Snake",
+   "group": "Harmless snake",
+   "note": "Tiny, shiny dark worm-like snake. Introduced; often in pot plants.",
+   "tags": [
+    "SE",
+    "NQ",
+    "CY"
+   ],
+   "look": "blind"
+  },
+  {
+   "name": "Anilios torresianus",
+   "common": "North-eastern Blind Snake",
+   "group": "Harmless snake",
+   "note": "Worm-like with tiny eye spots and a spine-tipped tail. Wet Tropics and Cape York.",
+   "tags": [
+    "NQ",
+    "CY"
+   ],
+   "look": "blind"
+  },
+  {
+   "name": "Lialis burtonis",
+   "common": "Burton's Legless Lizard",
+   "group": "Legless lizard",
+   "note": "A lizard: long wedge-shaped snout, ear opening, tiny hindlimb flaps and a fleshy tongue. Colour is extremely variable.",
+   "tags": [
+    "SE",
+    "NQ",
+    "CY",
+    "W"
+   ],
+   "look": "legless"
+  },
+  {
+   "name": "Pygopus lepidopodus",
+   "common": "Common Scaly-foot",
+   "group": "Legless lizard",
+   "note": "A lizard: ear opening, hindlimb flaps, broad fleshy tongue; rows of dark spots.",
+   "tags": [
+    "SE"
+   ],
+   "look": "legless"
+  },
+  {
+   "name": "Pygopus schraderi",
+   "common": "Eastern Hooded Scaly-foot",
+   "group": "Legless lizard",
+   "note": "A lizard with dark head and nape bands that mimic a young brown snake.",
+   "tags": [
+    "W",
+    "NQ",
+    "SE"
+   ],
+   "look": "legless"
+  },
+  {
+   "name": "Paradelma orientalis",
+   "common": "Brigalow Scaly-foot",
+   "group": "Legless lizard",
+   "note": "A grey lizard with a pale nape band. Brigalow belt; threatened.",
+   "tags": [
+    "NQ",
+    "SE"
+   ],
+   "look": "legless"
+  },
+  {
+   "name": "Delma tincta",
+   "common": "Excitable Delma",
+   "group": "Legless lizard",
+   "note": "A slender lizard with dark bars on the head. Leaps and flicks wildly when disturbed.",
+   "tags": [
+    "SE",
+    "NQ",
+    "CY",
+    "W"
+   ],
+   "look": "legless"
+  },
+  {
+   "name": "Delma torquata",
+   "common": "Collared Delma",
+   "group": "Legless lizard",
+   "note": "A small lizard with dark bands on the head and neck. Threatened.",
+   "tags": [
+    "SE"
+   ],
+   "look": "legless"
+  },
+  {
+   "name": "Delma plebeia",
+   "common": "Leaden Delma",
+   "group": "Legless lizard",
+   "note": "A plain grey-brown lizard with pale lips.",
+   "tags": [
+    "SE",
+    "NQ"
+   ],
+   "look": "legless"
+  },
+  {
+   "name": "Pygopus steelescotti",
+   "common": "Northern Hooded Scaly-foot",
+   "group": "Legless lizard",
+   "note": "A lizard with a dark hood on the head and neck, like a young brown snake. Ear opening and hindlimb flaps give it away.",
+   "tags": [
+    "NQ",
+    "CY",
+    "W"
+   ],
+   "look": "legless"
+  },
+  {
+   "name": "Delma inornata",
+   "common": "Olive Delma",
+   "group": "Legless lizard",
+   "note": "A plain olive-brown lizard with pale lips. Grassland and open woodland.",
+   "tags": [
+    "SE",
+    "W"
+   ],
+   "look": "legless"
+  }
+ ],
+ "photoLicense": "cc"
+}

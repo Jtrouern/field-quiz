@@ -1,0 +1,17 @@
+{
+ "title": "Butterflies of Lima",
+ "subtitle": "Lima Province, Peru",
+ "intro": "The most-observed butterflies around Lima, with real photos from iNaturalist observers. Name the family, then the species.",
+ "taxon": {
+  "id": 47224,
+  "name": "Papilionoidea"
+ },
+ "place": {
+  "id": 97128,
+  "name": "Lima Province, Peru"
+ },
+ "speciesCount": 60,
+ "groupBy": "family",
+ "locale": "en",
+ "photoLicense": "cc"
+}

@@ -1,0 +1,786 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Field Quiz</title>
+<!--
+  Field Quiz — an eBird-style photo quiz for any group of organisms, anywhere, using iNaturalist.
+  One file, no build step. Open it in a browser, or host it anywhere static (GitHub Pages, Netlify, your own server).
+  How to customise: see README.md, or use the "Make your own" tab.
+  Quick start with a URL:  index.html?taxon=47224&place=97128&n=60&group=family
+  Or paste a config into the <script id="quiz-config"> block below to lock this copy to one quiz.
+  Photos and data: iNaturalist (https://www.inaturalist.org). Each photo belongs to its observer and is shown with credit.
+  Code licence: MIT.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<style>
+/* Layout: field-guide app — sticky top bar, single centred column (max 900px), photo-first quiz card. */
+:root{
+  --bg:#f3f1ea; --surface:#fffdf7; --ink:#1f2620; --muted:#5d665c; --line:#d9d6c9;
+  --accent:#3f6b4f; --accent-ink:#ffffff; --focus:#b8661f;
+  --danger:#b3261e; --warn:#a86a00; --mild:#6a6f2a; --sea:#1f6a8a; --safe:#2e7d4f;
+  --danger-bg:#f8e3e0; --warn-bg:#f7ecd4; --mild-bg:#eceed8; --sea-bg:#ddeef4; --safe-bg:#e0f0e5;
+  --auto-l-bg:91%; --auto-l-fg:28%; --auto-s:45%;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"Source Sans 3","Segoe UI",system-ui,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#151915; --surface:#1e231e; --ink:#e9ebe3; --muted:#a3ab9f; --line:#353d35;
+  --accent:#7fb08e; --accent-ink:#0f1a12; --focus:#e09a55;
+  --danger:#ff8a80; --warn:#f2b44a; --mild:#c8cc7a; --sea:#7cc6e4; --safe:#79c995;
+  --danger-bg:#3a1d1a; --warn-bg:#36290f; --mild-bg:#2c2e18; --sea-bg:#12303b; --safe-bg:#16301f;
+  --auto-l-bg:20%; --auto-l-fg:78%; --auto-s:35%;
+  color-scheme:dark;
+}}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.5 var(--body)}
+a{color:var(--accent)}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+[hidden]{display:none!important}
+.top{position:sticky;top:0;z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.top-in{max-width:900px;margin:0 auto;padding:10px 16px;display:flex;gap:12px 16px;align-items:center;flex-wrap:wrap}
+.brand{font:700 1.5rem/1 var(--display);letter-spacing:.02em;text-transform:uppercase;margin-right:auto;min-width:0}
+.brand small{display:block;font:500 .78rem/1.3 var(--body);letter-spacing:.08em;color:var(--muted);text-transform:none}
+nav{display:flex;gap:6px;flex-wrap:wrap}
+nav button{border:1px solid var(--line);background:transparent;border-radius:999px;padding:6px 14px;cursor:pointer;font-weight:600}
+nav button[aria-current="page"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+nav button:disabled{opacity:.45;cursor:not-allowed}
+main{max-width:900px;margin:0 auto;padding:24px 16px 48px}
+footer{max-width:900px;margin:0 auto;padding:0 16px 32px;color:var(--muted);font-size:.85rem}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.1;text-wrap:balance;margin:0}
+h1{font-size:2.4rem;text-transform:uppercase;letter-spacing:.01em}
+h2{font-size:1.5rem;text-transform:uppercase;letter-spacing:.03em}
+.lede{color:var(--muted);max-width:62ch;margin:.5rem 0 0}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px}
+.stack{display:grid;gap:20px}
+.field{display:grid;gap:8px;min-width:0}
+.label{font:600 .8rem/1 var(--body);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{position:relative}
+.chip input{position:absolute;opacity:0;inset:0;cursor:pointer}
+.chip span{display:inline-block;border:1px solid var(--line);border-radius:6px;padding:7px 12px;background:var(--bg);cursor:pointer;user-select:none}
+.chip input:checked+span{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.chip input:focus-visible+span{outline:3px solid var(--focus);outline-offset:2px}
+.chip small{opacity:.75;font-variant-numeric:tabular-nums}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.btn{border:0;border-radius:8px;padding:11px 20px;font-weight:700;cursor:pointer;background:var(--accent);color:var(--accent-ink)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.small{padding:6px 12px;font-size:.9rem}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.count{color:var(--muted);font-variant-numeric:tabular-nums}
+.note{font-size:.92rem;color:var(--muted)}
+.badge{display:inline-block;font:700 .72rem/1.15 var(--body);letter-spacing:.06em;text-transform:uppercase;padding:5px 8px;border-radius:4px}
+.tone-danger{background:var(--danger-bg);color:var(--danger)}
+.tone-warn{background:var(--warn-bg);color:var(--warn)}
+.tone-mild{background:var(--mild-bg);color:var(--mild)}
+.tone-sea{background:var(--sea-bg);color:var(--sea)}
+.tone-safe{background:var(--safe-bg);color:var(--safe)}
+.tone-auto{background:hsl(var(--h) var(--auto-s) var(--auto-l-bg));color:hsl(var(--h) 50% var(--auto-l-fg))}
+.warnbox{border:1px solid var(--warn);background:var(--warn-bg);border-radius:8px;padding:10px 14px;font-size:.92rem}
+.errbox{border:1px solid var(--danger);background:var(--danger-bg);border-radius:8px;padding:12px 16px}
+input[type=text],input[type=search],select,textarea{padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);min-width:0;width:100%}
+textarea{font:13px/1.45 ui-monospace,Menlo,Consolas,monospace;resize:vertical}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:16px}
+/* quiz */
+.qhead{display:flex;justify-content:space-between;gap:12px;align-items:baseline;flex-wrap:wrap;margin-bottom:12px}
+.score{font:600 1.1rem var(--display);letter-spacing:.04em;font-variant-numeric:tabular-nums}
+.photo{position:relative;background:#0d100d;border-radius:10px;overflow:hidden;aspect-ratio:4/3;max-width:100%;display:grid;place-items:center}
+.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;cursor:zoom-in}
+.photo.zoom img{object-fit:cover;cursor:zoom-out}
+.photo .loading{color:#cfd6cc;font-size:.95rem;padding:16px;text-align:center;position:relative}
+.credit{font-size:.8rem;color:var(--muted);margin-top:6px;min-height:1.2em}
+.ask{font:700 1.25rem var(--display);text-transform:uppercase;letter-spacing:.03em;margin:18px 0 10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:10px}
+.choice{text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:12px 14px;cursor:pointer;display:grid;gap:2px;min-width:0}
+.choice i,.choice small{color:var(--muted);font-size:.88rem}
+.choice kbd{font:600 .72rem var(--body);color:var(--muted)}
+.choice.right{border-color:var(--safe);background:var(--safe-bg)}
+.choice.wrong{border-color:var(--danger);background:var(--danger-bg)}
+.choice:disabled{cursor:default}
+.typein{display:flex;gap:10px;flex-wrap:wrap}
+.typein input{flex:1 1 240px;width:auto}
+.reveal{margin-top:16px;border-left:4px solid var(--safe);padding:12px 16px;background:var(--surface);border-radius:0 8px 8px 0}
+.reveal.bad{border-left-color:var(--danger)}
+.reveal h3{font-size:1.5rem}
+.sci{font-style:italic;color:var(--muted)}
+.verdict{font:700 1rem var(--display);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+.verdict.ok{color:var(--safe)} .verdict.no{color:var(--danger)}
+.big{font:700 3.5rem/1 var(--display);font-variant-numeric:tabular-nums}
+.missed{display:grid;gap:8px;padding:0;list-style:none;margin:0}
+.missed li{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+/* guide */
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:16px 0}
+.toolbar input{flex:1 1 220px;width:auto}
+.toolbar select{width:auto}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.thumb{position:relative;overflow:hidden;aspect-ratio:4/3;background:var(--line);display:grid;place-items:center;color:var(--muted);font-size:.85rem}
+.thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.card .body{padding:12px 14px;display:grid;gap:6px;min-width:0}
+.card h3{font-size:1.25rem}
+.meta{font-size:.78rem;color:var(--muted);letter-spacing:.03em}
+.group-h{grid-column:1/-1;margin-top:10px;padding-bottom:4px;border-bottom:2px solid var(--line);display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.group-h small{font:400 .95rem var(--body);text-transform:none;letter-spacing:0;color:var(--muted)}
+.presets{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:12px}
+.preset{text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:14px 16px;cursor:pointer;display:grid;gap:4px}
+.preset b{font:700 1.15rem var(--display);text-transform:uppercase;letter-spacing:.02em}
+.share{display:grid;gap:12px}
+.share .row input{flex:1 1 260px;width:auto}
+@media (prefers-reduced-motion:no-preference){.choice,.btn,.chip span,.preset{transition:background .15s,border-color .15s}}
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in">
+  <div class="brand" id="brand">Field Quiz<small>Photo ID quizzes from iNaturalist</small></div>
+  <nav aria-label="Sections">
+    <button id="nav-quiz">Quiz</button>
+    <button id="nav-guide">Field guide</button>
+    <button id="nav-make">Make your own</button>
+  </nav>
+</div></header>
+<main id="app"></main>
+<footer id="foot">Photos and records from <a href="https://www.inaturalist.org" target="_blank" rel="noopener">iNaturalist</a>. Each photo belongs to its observer and is shown with their credit and licence.</footer>
+
+<!-- Paste a quiz config here (JSON) to lock this copy of the page to one quiz. Leave empty to show the builder. -->
+<script type="application/json" id="quiz-config"></script>
+
+<script>
+"use strict";
+/* Built-in example quizzes. Each one is a config like the JSON files in /configs. */
+const PRESETS = {"lima-butterflies":{"title":"Butterflies of Lima","subtitle":"Lima Province, Peru","intro":"The most-observed butterflies around Lima, with real photos from iNaturalist observers. Name the family, then the species.","taxon":{"id":47224,"name":"Papilionoidea"},"place":{"id":97128,"name":"Lima Province, Peru"},"speciesCount":60,"groupBy":"family","locale":"en","photoLicense":"cc"},"queensland-snakes":{"title":"Queensland Snake ID","subtitle":"Venomous & harmless snakes and legless lizards","intro":"Real photos from iNaturalist observers in Queensland. Decide whether it's dangerous, then name the species.","fieldRule":"Field rule: in Australia, treat any snake you can't identify for certain as dangerous.","place":{"id":7308,"name":"Queensland, Australia"},"fallbackPlace":{"id":6744,"name":"Australia"},"groupBy":"custom","groupNoun":"danger level","groupQuestion":"Dangerous or harmless?","groups":[{"name":"Dangerously venomous","tone":"danger","answer":"Dangerous"},{"name":"Venomous","tone":"warn","answer":"Venomous, lower risk"},{"name":"Mildly venomous","tone":"mild","answer":"Venomous, lower risk"},{"name":"Sea snake","tone":"sea","answer":"Dangerous"},{"name":"Rear-fanged, mild","tone":"mild","answer":"Venomous, lower risk"},{"name":"Harmless snake","tone":"safe","answer":"Harmless"},{"name":"Legless lizard","tone":"safe","answer":"Harmless"}],"answers":{"Dangerous":"Could kill a person","Venomous, lower risk":"Small elapids and rear-fanged snakes","Harmless":"Non-venomous snake or legless lizard"},"tags":{"label":"Where","values":{"SE":"South-east","NQ":"Central & north coast","CY":"Cape York & Torres Strait","W":"Inland & outback","SEA":"Sea"}},"species":[{"name":"Oxyuranus scutellatus","common":"Coastal Taipan","group":"Dangerously venomous","note":"Long, pale-faced head; uniform brown with a paler snout and orange-tinged eyes. Large, fast and nervous.","tags":["SE","NQ","CY"],"look":"brown"},{"name":"Oxyuranus microlepidotus","common":"Inland Taipan","group":"Dangerously venomous","note":"Dark glossy head (darker in winter); scales edged dark, giving a herringbone look. Channel Country of the far south-west.","tags":["W"],"look":"brown"},{"name":"Pseudonaja textilis","common":"Eastern Brown Snake","group":"Dangerously venomous","note":"Slender, plain tan to dark brown; cream belly with orange or pink spots. Juveniles banded with a black head and nape.","tags":["SE","NQ","W"],"look":"brown"},{"name":"Pseudonaja mengdeni","common":"Western Brown Snake (Gwardar)","group":"Dangerously venomous","note":"Very variable: plain, banded or black-headed. Dry inland country.","tags":["W"],"look":"brown"},{"name":"Pseudonaja aspidorhyncha","common":"Strap-snouted Brown Snake","group":"Dangerously venomous","note":"Squarish snout; inland plains and downs. Often dark on the head and neck.","tags":["W"],"look":"brown"},{"name":"Pseudonaja guttata","common":"Speckled Brown Snake","group":"Dangerously venomous","note":"Yellow-brown to orange with dark-edged scales forming speckles. Black-soil plains.","tags":["W"],"look":"brown"},{"name":"Pseudonaja ingrami","common":"Ingram's Brown Snake","group":"Dangerously venomous","note":"Robust, glossy brown with a darker head. Cracking clays of the Barkly Tableland.","tags":["W"],"look":"brown"},{"name":"Pseudonaja nuchalis","common":"Northern Brown Snake","group":"Dangerously venomous","note":"Variable; often a dark nape band or herringbone pattern. Tropical woodland and Gulf country.","tags":["W","CY"],"look":"brown"},{"name":"Acanthophis antarcticus","common":"Common Death Adder","group":"Dangerously venomous","note":"Thick body, broad triangular head, thin pale tail tip used as a lure. Banded grey, brown or red. Lies still in leaf litter.","tags":["SE","NQ","W"],"look":"adder"},{"name":"Acanthophis praelongus","common":"Northern Death Adder","group":"Dangerously venomous","note":"Rough-looking scales and raised ridges over the eyes. Tropical north.","tags":["NQ","CY"],"look":"adder"},{"name":"Acanthophis rugosus","common":"Rough-scaled Death Adder","group":"Dangerously venomous","note":"Stout and banded with rough, keeled scales. Barkly Tableland and the Gulf country of north-west Queensland.","tags":["W"],"look":"adder"},{"name":"Pseudechis australis","common":"Mulga Snake (King Brown)","group":"Dangerously venomous","note":"Large and heavy with a broad head. Each scale two-toned, giving a netted look. Absent from the far south-east.","tags":["W","NQ","CY"],"look":"black"},{"name":"Pseudechis porphyriacus","common":"Red-bellied Black Snake","group":"Dangerously venomous","note":"Glossy black back, red to pink lower flanks. Usually near water along the east coast.","tags":["SE","NQ"],"look":"black"},{"name":"Pseudechis guttatus","common":"Spotted Black Snake","group":"Dangerously venomous","note":"Black, grey or cream-spotted; blue-grey belly. Inland of the Great Dividing Range.","tags":["SE","W"],"look":"black"},{"name":"Pseudechis colletti","common":"Collett's Snake","group":"Dangerously venomous","note":"Dark with bold pink-orange to cream bands or blotches. Black-soil downs of central-west Queensland only.","tags":["W"],"look":"black"},{"name":"Pseudechis papuanus","common":"Papuan Black Snake","group":"Dangerously venomous","note":"Plain black. Torres Strait islands near New Guinea.","tags":["CY"],"look":"black"},{"name":"Tropidechis carinatus","common":"Rough-scaled Snake","group":"Dangerously venomous","note":"Strongly keeled scales; olive-brown with narrow dark crossbands. Easily mistaken for the harmless Keelback, but has no loreal scale.","tags":["SE","NQ"],"look":"keel"},{"name":"Notechis scutatus","common":"Tiger Snake","group":"Dangerously venomous","note":"Yellowish crossbands on dark olive, or plain. Flattens its neck. Border ranges and Granite Belt.","tags":["SE"],"look":"banded"},{"name":"Hoplocephalus stephensii","common":"Stephens' Banded Snake","group":"Dangerously venomous","note":"Dark and cream bands; barred lips. Climbs in rainforest and tall forest.","tags":["SE"],"look":"banded"},{"name":"Hoplocephalus bitorquatus","common":"Pale-headed Snake","group":"Dangerously venomous","note":"Grey body; pale band behind the head edged with black. Climbs in woodland trees.","tags":["SE","NQ","W"],"look":"banded"},{"name":"Cryptophis nigrescens","common":"Eastern Small-eyed Snake","group":"Dangerously venomous","note":"Glossy black, tiny eyes, pink to cream belly. Nocturnal in east-coast forest.","tags":["SE","NQ"],"look":"black"},{"name":"Pseudechis pailsei","common":"Dwarf Mulga Snake","group":"Dangerously venomous","note":"A smaller relative of the Mulga Snake with the same netted, two-toned scales. Rocky country of the north-west.","tags":["W"],"look":"black"},{"name":"Pseudonaja modesta","common":"Ringed Brown Snake","group":"Venomous","note":"Small. Brown with a black head blotch and narrow dark rings that fade with age.","tags":["W"],"look":"brown"},{"name":"Denisonia devisi","common":"De Vis' Banded Snake","group":"Venomous","note":"Stout; yellow-brown with ragged dark bands; barred lips. Floodplains.","tags":["W","SE"],"look":"adder"},{"name":"Denisonia maculata","common":"Ornamental Snake","group":"Venomous","note":"Brown with dark-edged white lip bars. Gilgai wetlands of central Queensland; threatened.","tags":["NQ"],"look":"adder"},{"name":"Demansia psammophis","common":"Yellow-faced Whipsnake","group":"Venomous","note":"Slender, big eyes; pale-edged dark comma below the eye. Active by day and very fast.","tags":["SE","NQ","W"],"look":"whip"},{"name":"Demansia papuensis","common":"Greater Black Whipsnake","group":"Venomous","note":"Large, dark grey to black, with a long thin tail. Tropical woodland.","tags":["NQ","CY"],"look":"whip"},{"name":"Demansia vestigiata","common":"Lesser Black Whipsnake","group":"Venomous","note":"Dark grey-brown with fine flecks; slender with big eyes.","tags":["NQ","CY"],"look":"whip"},{"name":"Demansia torquata","common":"Collared Whipsnake","group":"Venomous","note":"Dark collar across the neck; pale-edged eye marking.","tags":["NQ","W"],"look":"whip"},{"name":"Hemiaspis signata","common":"Black-bellied Swamp Snake","group":"Venomous","note":"Olive to black with two thin pale lines on the face; dark belly. Near water.","tags":["SE","NQ"],"look":"swamp"},{"name":"Hemiaspis damelii","common":"Grey Snake","group":"Venomous","note":"Grey above; young have a black head. Floodplain country; threatened.","tags":["SE","W"],"look":"swamp"},{"name":"Cryptophis boschmai","common":"Carpentaria Snake","group":"Venomous","note":"Brown with paler lips; small and nocturnal.","tags":["NQ","CY"],"look":"black"},{"name":"Cryptophis nigrostriatus","common":"Black-striped Snake","group":"Venomous","note":"Pink-red to salmon with a black stripe down the back.","tags":["NQ","CY"],"look":"stripe"},{"name":"Suta suta","common":"Curl Snake","group":"Venomous","note":"Dark hood on the head, pale-edged eye line. Coils tightly when threatened.","tags":["W"],"look":"hooded"},{"name":"Suta dwyeri","common":"Dwyer's Snake","group":"Venomous","note":"Black cap on the head and nape; reddish-brown body. Nocturnal.","tags":["SE","W"],"look":"hooded"},{"name":"Cacophis squamulosus","common":"Golden-crowned Snake","group":"Mildly venomous","note":"Yellow stripe along each side of the head forming a crown; pink-orange belly with a dark midline.","tags":["SE"],"look":"crowned"},{"name":"Cacophis harriettae","common":"White-crowned Snake","group":"Mildly venomous","note":"Black with a bright white band around the back of the head.","tags":["SE","NQ"],"look":"crowned"},{"name":"Cacophis krefftii","common":"Dwarf Crowned Snake","group":"Mildly venomous","note":"Tiny; black with a yellow-cream band on the nape and a yellow belly.","tags":["SE"],"look":"crowned"},{"name":"Cacophis churchilli","common":"Northern Dwarf Crowned Snake","group":"Mildly venomous","note":"Tiny; dark grey with a pale nape band. Wet Tropics.","tags":["NQ"],"look":"crowned"},{"name":"Furina diadema","common":"Red-naped Snake","group":"Mildly venomous","note":"Dark-edged reddish scales; glossy black head with a red-orange nape patch.","tags":["SE","NQ","W"],"look":"naped"},{"name":"Furina ornata","common":"Orange-naped Snake","group":"Mildly venomous","note":"Like the Red-naped Snake but with an orange nape band. Northern and inland.","tags":["NQ","W"],"look":"naped"},{"name":"Furina barnardi","common":"Moon Snake","group":"Mildly venomous","note":"Yellow-brown with dark-edged scales and a pale nape band.","tags":["NQ"],"look":"naped"},{"name":"Furina dunmalli","common":"Dunmall's Snake","group":"Mildly venomous","note":"Grey to black with pale lips. Brigalow belt; threatened.","tags":["SE"],"look":"naped"},{"name":"Furina tristis","common":"Brown-headed Snake","group":"Mildly venomous","note":"Dark brown with a pale nape band. Cape York.","tags":["CY"],"look":"naped"},{"name":"Vermicella annulata","common":"Bandy-bandy","group":"Mildly venomous","note":"Bold black and white rings. Lifts its body in stiff loops when threatened.","tags":["SE","NQ","W"],"look":"banded"},{"name":"Brachyurophis australis","common":"Coral Snake","group":"Mildly venomous","note":"Coral-pink to orange with narrow pale-edged bands; black bands on head and neck; upturned snout.","tags":["SE","W"],"look":"banded"},{"name":"Antaioserpens albiceps","common":"Robust Burrowing Snake","group":"Mildly venomous","note":"Reddish-brown with a darker head. Burrows; rarely seen.","tags":["NQ"],"look":"burrowing"},{"name":"Aipysurus laevis","common":"Olive Sea Snake","group":"Sea snake","note":"Large, olive-brown above, cream below. Curious around divers on the Great Barrier Reef.","tags":["SEA"],"look":"sea"},{"name":"Aipysurus duboisii","common":"Dubois' Sea Snake","group":"Sea snake","note":"Pinkish-olive with dark-edged scales. Reef flats.","tags":["SEA"],"look":"sea"},{"name":"Hydrophis platurus","common":"Yellow-bellied Sea Snake","group":"Sea snake","note":"Black back, yellow belly, spotted paddle tail. Open ocean; often washes up on beaches.","tags":["SEA"],"look":"sea"},{"name":"Hydrophis elegans","common":"Elegant Sea Snake","group":"Sea snake","note":"Long body with a small head; banded. Turbid inshore water.","tags":["SEA"],"look":"sea"},{"name":"Hydrophis major","common":"Olive-headed Sea Snake","group":"Sea snake","note":"Olive head with broad dark bands on the body.","tags":["SEA"],"look":"sea"},{"name":"Hydrophis stokesii","common":"Stokes' Sea Snake","group":"Sea snake","note":"Very thick-bodied; variable bands.","tags":["SEA"],"look":"sea"},{"name":"Hydrophis peronii","common":"Horned Sea Snake","group":"Sea snake","note":"Spiny projections above the eyes.","tags":["SEA"],"look":"sea"},{"name":"Hydrophis kingii","common":"Spectacled Sea Snake","group":"Sea snake","note":"Dark head with pale markings like spectacles.","tags":["SEA"],"look":"sea"},{"name":"Hydrophis curtus","common":"Spine-bellied Sea Snake","group":"Sea snake","note":"Short and stout with enlarged keeled belly scales.","tags":["SEA"],"look":"sea"},{"name":"Hydrophis ocellatus","common":"Spotted Sea Snake","group":"Sea snake","note":"Pale with dark bands or rings of spots. Reef and inshore waters.","tags":["SEA"],"look":"sea"},{"name":"Emydocephalus annulatus","common":"Turtle-headed Sea Snake","group":"Sea snake","note":"Blunt, turtle-like head. Often banded black and cream; eats fish eggs.","tags":["SEA"],"look":"sea"},{"name":"Boiga irregularis","common":"Brown Tree Snake","group":"Rear-fanged, mild","note":"Big eyes with vertical pupils, bulbous head, thin neck; banded brown or red and cream. Nocturnal and quick to strike.","tags":["SE","NQ","CY"],"look":"treesnake"},{"name":"Cerberus australis","common":"Bockadam","group":"Rear-fanged, mild","note":"Eyes on top of the head. Mangrove mudflats.","tags":["NQ","CY"],"look":"water"},{"name":"Pseudoferania polylepis","common":"Macleay's Water Snake","group":"Rear-fanged, mild","note":"Olive-brown with small upward-facing eyes. Freshwater.","tags":["NQ","CY"],"look":"water"},{"name":"Fordonia leucobalia","common":"White-bellied Mangrove Snake","group":"Rear-fanged, mild","note":"Very variable colour; white belly. Eats crabs in mangroves.","tags":["NQ","CY"],"look":"water"},{"name":"Myron richardsonii","common":"Richardson's Mangrove Snake","group":"Rear-fanged, mild","note":"Small and grey-banded. Mangroves.","tags":["CY"],"look":"water"},{"name":"Tropidonophis mairii","common":"Keelback","group":"Harmless snake","note":"Keeled scales like the dangerous Rough-scaled Snake, but has a loreal scale between eye and nostril. Olive-brown with dark flecks; near water; eats cane toads.","tags":["SE","NQ","CY"],"look":"keel"},{"name":"Dendrelaphis punctulatus","common":"Common Tree Snake","group":"Harmless snake","note":"Very slender with huge eyes; green, olive, black or blue above with a yellow throat. Shows blue skin when it inflates its neck.","tags":["SE","NQ","CY"],"look":"treesnake"},{"name":"Dendrelaphis calligaster","common":"Northern Tree Snake","group":"Harmless snake","note":"Slender and brown above with a dark stripe through the eye; pale belly.","tags":["NQ","CY"],"look":"treesnake"},{"name":"Stegonotus australis","common":"Slaty-grey Snake","group":"Harmless snake","note":"Glossy slate-grey with a white belly. Bites readily but is harmless.","tags":["NQ","CY"],"look":"black"},{"name":"Acrochordus granulatus","common":"Little File Snake","group":"Harmless snake","note":"Loose, granular skin; banded. Estuaries and coastal water.","tags":["NQ","CY","SEA"],"look":"water"},{"name":"Acrochordus arafurae","common":"Arafura File Snake","group":"Harmless snake","note":"Baggy, rough skin. Freshwater billabongs and rivers.","tags":["CY"],"look":"water"},{"name":"Morelia spilota","common":"Carpet Python","group":"Harmless snake","note":"Heat-sensing pits along the lips; blotched or banded pattern. Large; common in roofs and sheds.","tags":["SE","NQ","CY","W"],"look":"python"},{"name":"Morelia viridis","common":"Green Python","group":"Harmless snake","note":"Adults bright green; young yellow or red. Coils over a branch. Iron and McIlwraith Ranges.","tags":["CY"],"look":"python"},{"name":"Simalia kinghorni","common":"Scrub Python","group":"Harmless snake","note":"Australia's longest snake; iridescent with zigzag patterns and large head scales.","tags":["NQ","CY"],"look":"python"},{"name":"Liasis fuscus","common":"Water Python","group":"Harmless snake","note":"Iridescent dark brown to black above, yellow below. Near water.","tags":["NQ","CY"],"look":"python"},{"name":"Liasis olivaceus","common":"Olive Python","group":"Harmless snake","note":"Large, plain olive-brown. Rocky country of the north-west.","tags":["W","NQ"],"look":"python"},{"name":"Aspidites melanocephalus","common":"Black-headed Python","group":"Harmless snake","note":"Glossy black head and neck; banded body; no heat pits.","tags":["NQ","CY","W"],"look":"python"},{"name":"Aspidites ramsayi","common":"Woma","group":"Harmless snake","note":"Banded orange-brown with dark patches above the eyes. Sandy inland country.","tags":["W"],"look":"python"},{"name":"Antaresia maculosa","common":"Spotted Python","group":"Harmless snake","note":"Small python with dark irregular blotches on a pale ground. Rocky outcrops and caves.","tags":["SE","NQ","CY"],"look":"python"},{"name":"Antaresia childreni","common":"Children's Python","group":"Harmless snake","note":"Small and brown with faded blotches.","tags":["CY","W"],"look":"python"},{"name":"Antaresia stimsoni","common":"Stimson's Python","group":"Harmless snake","note":"Small, with bold reddish blotches on cream.","tags":["W"],"look":"python"},{"name":"Anilios ligatus","common":"Robust Blind Snake","group":"Harmless snake","note":"Worm-like; tiny eye spots, blunt head and a spine-tipped tail.","tags":["SE","NQ","W"],"look":"blind"},{"name":"Anilios nigrescens","common":"Blackish Blind Snake","group":"Harmless snake","note":"Worm-like; dark purplish-grey above, pink below.","tags":["SE"],"look":"blind"},{"name":"Anilios wiedii","common":"Brown-snouted Blind Snake","group":"Harmless snake","note":"Small and slender with a brownish snout.","tags":["SE","NQ"],"look":"blind"},{"name":"Indotyphlops braminus","common":"Flowerpot Blind Snake","group":"Harmless snake","note":"Tiny, shiny dark worm-like snake. Introduced; often in pot plants.","tags":["SE","NQ","CY"],"look":"blind"},{"name":"Anilios torresianus","common":"North-eastern Blind Snake","group":"Harmless snake","note":"Worm-like with tiny eye spots and a spine-tipped tail. Wet Tropics and Cape York.","tags":["NQ","CY"],"look":"blind"},{"name":"Lialis burtonis","common":"Burton's Legless Lizard","group":"Legless lizard","note":"A lizard: long wedge-shaped snout, ear opening, tiny hindlimb flaps and a fleshy tongue. Colour is extremely variable.","tags":["SE","NQ","CY","W"],"look":"legless"},{"name":"Pygopus lepidopodus","common":"Common Scaly-foot","group":"Legless lizard","note":"A lizard: ear opening, hindlimb flaps, broad fleshy tongue; rows of dark spots.","tags":["SE"],"look":"legless"},{"name":"Pygopus schraderi","common":"Eastern Hooded Scaly-foot","group":"Legless lizard","note":"A lizard with dark head and nape bands that mimic a young brown snake.","tags":["W","NQ","SE"],"look":"legless"},{"name":"Paradelma orientalis","common":"Brigalow Scaly-foot","group":"Legless lizard","note":"A grey lizard with a pale nape band. Brigalow belt; threatened.","tags":["NQ","SE"],"look":"legless"},{"name":"Delma tincta","common":"Excitable Delma","group":"Legless lizard","note":"A slender lizard with dark bars on the head. Leaps and flicks wildly when disturbed.","tags":["SE","NQ","CY","W"],"look":"legless"},{"name":"Delma torquata","common":"Collared Delma","group":"Legless lizard","note":"A small lizard with dark bands on the head and neck. Threatened.","tags":["SE"],"look":"legless"},{"name":"Delma plebeia","common":"Leaden Delma","group":"Legless lizard","note":"A plain grey-brown lizard with pale lips.","tags":["SE","NQ"],"look":"legless"},{"name":"Pygopus steelescotti","common":"Northern Hooded Scaly-foot","group":"Legless lizard","note":"A lizard with a dark hood on the head and neck, like a young brown snake. Ear opening and hindlimb flaps give it away.","tags":["NQ","CY","W"],"look":"legless"},{"name":"Delma inornata","common":"Olive Delma","group":"Legless lizard","note":"A plain olive-brown lizard with pale lips. Grassland and open woodland.","tags":["SE","W"],"look":"legless"}],"photoLicense":"cc"}};
+
+/* ===================== iNaturalist API ===================== */
+const API = "https://api.inaturalist.org/v1";
+const CC_LICENSES = "cc-by,cc-by-nc,cc-by-sa,cc-by-nd,cc-by-nc-sa,cc-by-nc-nd,cc0";
+const store = { // per-browser cache; safe if storage is blocked
+  get(k){try{const v=JSON.parse(localStorage.getItem("fq:"+k));if(v&&Date.now()-v.t<7*864e5)return v.d}catch(e){}return null},
+  set(k,d){try{localStorage.setItem("fq:"+k,JSON.stringify({t:Date.now(),d}))}catch(e){}}
+};
+let queue = Promise.resolve(), lastCall = 0;
+function apiGet(path){ // one request at a time, about 1 per 0.7 s, as iNaturalist asks
+  const p = queue.then(async()=>{
+    const wait = Math.max(0, 700-(Date.now()-lastCall));
+    if(wait) await new Promise(r=>setTimeout(r,wait));
+    lastCall = Date.now();
+    const res = await fetch(API+path,{headers:{Accept:"application/json"}});
+    if(res.status===429) throw new Error("iNaturalist is rate-limiting requests. Wait a minute and try again.");
+    if(!res.ok) throw new Error("iNaturalist returned an error ("+res.status+")");
+    return res.json();
+  });
+  queue = p.catch(()=>{});
+  return p;
+}
+const isId = v => typeof v==="number" || (typeof v==="string" && /^\d+$/.test(v));
+async function resolveTaxon(t){
+  if(t==null||t==="") return null;
+  if(isId(t)) return {id:+t};
+  if(typeof t==="object" && t.id) return t;
+  const r = await apiGet("/taxa/autocomplete?per_page=10&q="+encodeURIComponent(t));
+  const lo = String(t).toLowerCase(), L = r.results||[];
+  const hit = L.find(x=>x.name.toLowerCase()===lo) || L.find(x=>(x.preferred_common_name||"").toLowerCase()===lo) || L[0];
+  if(!hit) throw new Error(`No iNaturalist taxon matches "${t}".`);
+  return {id:hit.id,name:hit.name,common:hit.preferred_common_name||""};
+}
+async function resolvePlace(p){
+  if(p==null||p==="") return null;
+  if(isId(p)) return {id:+p};
+  if(typeof p==="object" && p.id) return p;
+  const [q,...quals] = String(p).split(",").map(s=>s.trim()).filter(Boolean);
+  const r = await apiGet("/places/autocomplete?per_page=20&q="+encodeURIComponent(q));
+  const L = r.results||[];
+  const hit = L.find(x=>quals.every(qq=>(x.display_name||"").toLowerCase().includes(qq.toLowerCase()))) || L[0];
+  if(!hit) throw new Error(`No iNaturalist place matches "${p}".`);
+  return {id:hit.id,name:hit.display_name};
+}
+
+/* ===================== Config ===================== */
+function normalize(c){
+  const curated = Array.isArray(c.species) && c.species.length>0;
+  return {
+    title:c.title||"", subtitle:c.subtitle||"", intro:c.intro||"", fieldRule:c.fieldRule||"",
+    taxon:c.taxon??null, place:c.place??null, fallbackPlace:c.fallbackPlace??null,
+    speciesCount:Math.min(500,Math.max(4,+c.speciesCount||50)),
+    groupBy:c.groupBy || (curated && c.species.some(s=>s&&s.group) ? "custom" : (curated?"none":"family")),
+    groupNoun:c.groupNoun||"", groupQuestion:c.groupQuestion||"",
+    groups:Array.isArray(c.groups)?c.groups.map(g=>typeof g==="string"?{name:g}:g):[],
+    answers:c.answers||{}, tags:c.tags||null,
+    species:curated?c.species.map(s=>typeof s==="string"?{name:s}:s):null,
+    locale:c.locale||"en", photoLicense:c.photoLicense||"any", quality:c.quality||"research",
+    minPhotos:+c.minPhotos||6
+  };
+}
+async function initialConfig(){
+  const P = new URLSearchParams(location.search);
+  if(P.get("preset") && PRESETS[P.get("preset")]) return {cfg:PRESETS[P.get("preset")],src:{preset:P.get("preset")}};
+  if(P.get("config")){
+    const r = await fetch(P.get("config")); if(!r.ok) throw new Error("Couldn't load config file "+P.get("config"));
+    return {cfg:await r.json(),src:{config:P.get("config")}};
+  }
+  if(P.get("taxon")){
+    const cfg = {taxon:P.get("taxon"),place:P.get("place")||null,speciesCount:+P.get("n")||50,groupBy:P.get("group")||"family",locale:P.get("lang")||"en",photoLicense:P.get("license")||"any",title:P.get("title")||""};
+    return {cfg,src:{params:true}};
+  }
+  const el = document.getElementById("quiz-config");
+  const txt = el ? el.textContent.trim() : "";
+  if(txt){ try{ return {cfg:JSON.parse(txt),src:{embedded:true}} }catch(e){ throw new Error("The config pasted into this page isn't valid JSON: "+e.message) } }
+  return null;
+}
+
+/* ===================== Species list ===================== */
+async function buildSpecies(cfg, progress){
+  const key = "list:"+JSON.stringify([cfg.taxon,cfg.place,cfg.speciesCount,cfg.groupBy,cfg.locale,cfg.quality,cfg.species&&cfg.species.length]);
+  progress("Finding the place and taxon…");
+  const place = await resolvePlace(cfg.place);
+  const fallback = await resolvePlace(cfg.fallbackPlace);
+  if(cfg.species){
+    const species = cfg.species.map((s,i)=>({key:"s"+i,sci:s.name||s.sci||"",common:s.common||"",group:s.group||"",groupSub:"",note:s.note||"",tags:s.tags||[],look:s.look||"",taxonId:s.taxonId||null,thumb:null,count:null}));
+    return {species,place,fallback,taxon:null};
+  }
+  const saved = store.get(key); if(saved) return saved;
+  const taxon = await resolveTaxon(cfg.taxon);
+  if(!taxon) throw new Error("This quiz needs either a taxon (like Papilionoidea) or a list of species.");
+  progress("Counting species observed there…");
+  const q = new URLSearchParams({taxon_id:taxon.id,quality_grade:cfg.quality,per_page:String(Math.min(500,cfg.speciesCount+40)),locale:cfg.locale});
+  if(place){q.set("place_id",place.id);q.set("preferred_place_id",place.id)}
+  const r = await apiGet("/observations/species_counts?"+q);
+  const list = (r.results||[]).filter(x=>x.taxon&&x.taxon.rank==="species").slice(0,cfg.speciesCount);
+  if(!list.length) throw new Error("iNaturalist has no research-grade species records for that taxon and place. Try a bigger place or a broader group.");
+  const species = list.map((x,i)=>({key:"t"+x.taxon.id,sci:x.taxon.name,common:x.taxon.preferred_common_name||"",group:"",groupSub:"",note:"",tags:[],look:"",taxonId:x.taxon.id,count:x.count,
+    thumb:x.taxon.default_photo?{src:x.taxon.default_photo.medium_url,credit:x.taxon.default_photo.attribution||"",license:x.taxon.default_photo.license_code||null}:null}));
+  if(cfg.groupBy && cfg.groupBy!=="none" && cfg.groupBy!=="custom"){
+    progress("Sorting species into each "+cfg.groupBy+"…");
+    const own = new Set(list.map(x=>x.taxon.id));
+    const ids = [...new Set(list.flatMap(x=>x.taxon.ancestor_ids||[]))].filter(id=>!own.has(id));
+    const info = {};
+    for(let i=0;i<ids.length;i+=30){
+      const t = await apiGet("/taxa/"+ids.slice(i,i+30).join(",")+"?per_page=30&locale="+cfg.locale);
+      (t.results||[]).forEach(a=>info[a.id]=a);
+    }
+    species.forEach((s,i)=>{
+      const a = (list[i].taxon.ancestor_ids||[]).map(id=>info[id]).find(t=>t&&t.rank===cfg.groupBy);
+      s.group = a?a.name:"Other"; s.groupSub = a&&a.preferred_common_name||"";
+    });
+  }
+  const out = {species,place,fallback,taxon};
+  store.set(key,out);
+  return out;
+}
+function deriveGroups(cfg,species){
+  const counts = {}; species.forEach(s=>{ if(s.group) counts[s.group]=(counts[s.group]||0)+1 });
+  const names = cfg.groups.map(g=>g.name).filter(n=>counts[n]);
+  Object.keys(counts).sort((a,b)=>counts[b]-counts[a]||a.localeCompare(b)).forEach(n=>{ if(!names.includes(n)) names.push(n) });
+  return names.map((n,i)=>{
+    const d = cfg.groups.find(g=>g.name===n)||{};
+    const sp = species.find(s=>s.group===n);
+    return {name:n,label:d.label||n,sub:d.sub||(sp&&sp.groupSub)||"",tone:d.tone||"",hue:(i*47+150)%360,answer:d.answer||n,hint:d.hint||"",count:counts[n]};
+  });
+}
+
+/* ===================== Photos ===================== */
+const photoCache = new Map();
+function toPhotos(results,outside){
+  const out=[];
+  for(const o of results||[]) for(const ph of (o.photos||[]).slice(0,2)){
+    if(!ph.url) continue;
+    out.push({src:ph.url.replace(/\/square\./,"/large."),credit:ph.attribution||"",obs:o.uri||("https://www.inaturalist.org/observations/"+o.id),taxonId:o.taxon&&o.taxon.id,place:o.place_guess||"",outside});
+  }
+  return out;
+}
+function photosFor(sp){
+  if(photoCache.has(sp.key)) return photoCache.get(sp.key);
+  const cfg = S.cfg, ckey = "obs:"+(sp.taxonId||sp.sci)+":"+(S.place&&S.place.id)+":"+cfg.photoLicense;
+  const saved = store.get(ckey);
+  if(saved){ const p=Promise.resolve(saved); photoCache.set(sp.key,p); return p }
+  const p = (async()=>{
+    const query = placeId => {
+      const q = new URLSearchParams({quality_grade:"research",photos:"true",per_page:"40",order_by:"votes"});
+      sp.taxonId ? q.set("taxon_id",sp.taxonId) : q.set("taxon_name",sp.sci);
+      if(placeId) q.set("place_id",placeId);
+      if(cfg.photoLicense==="cc") q.set("photo_license",CC_LICENSES);
+      return apiGet("/observations?"+q);
+    };
+    let photos = toPhotos((await query(S.place&&S.place.id)).results,false);
+    if(photos.length<cfg.minPhotos && S.place){
+      photos = photos.concat(toPhotos((await query(S.fallback&&S.fallback.id)).results,true));
+    }
+    if(!photos.length && sp.common){
+      const q = new URLSearchParams({taxon_name:sp.common,quality_grade:"research",photos:"true",per_page:"30"});
+      photos = toPhotos((await apiGet("/observations?"+q)).results,true);
+    }
+    const seen = new Set(); photos = photos.filter(x=>!seen.has(x.src)&&seen.add(x.src));
+    const d = {photos,taxonId:sp.taxonId||(photos[0]||{}).taxonId||null};
+    store.set(ckey,d); return d;
+  })();
+  photoCache.set(sp.key,p); p.catch(()=>photoCache.delete(sp.key));
+  return p;
+}
+
+/* ===================== State & helpers ===================== */
+const S = {cfg:null,src:null,species:[],groups:[],place:null,fallback:null,taxon:null,view:"make",quiz:null,
+  opts:{mode:"two",groups:null,tags:null,answer:"choices",length:10},guide:{q:"",tag:"all"},loading:null,error:null};
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const norm=s=>String(s).normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/\(.*?\)/g,"").replace(/[^a-z ]/g," ").replace(/\s+/g," ").trim();
+const groupOf = sp => S.groups.find(g=>g.name===sp.group);
+const hasGroups = () => S.groups.length>1;
+const noun = () => S.cfg.groupNoun || (S.cfg.groupBy==="custom"||S.cfg.groupBy==="none" ? "group" : S.cfg.groupBy);
+const groupQ = () => S.cfg.groupQuestion || `Which ${noun()}?`;
+function badgeFor(g){
+  if(!g) return "";
+  const cls = g.tone ? "tone-"+g.tone : "tone-auto";
+  return `<span class="badge ${cls}" ${g.tone?"":`style="--h:${g.hue}"`}>${esc(g.label)}</span>`;
+}
+const nameHtml = sp => sp.common ? `<b>${esc(sp.common)}</b><i>${esc(sp.sci)}</i>` : `<b><i style="color:inherit;font-size:inherit">${esc(sp.sci)}</i></b>`;
+const title = () => S.cfg.title || (S.taxon ? `${S.taxon.common||S.taxon.name}${S.place?" of "+S.place.name:""}` : "Field Quiz");
+function answersList(){ const seen=[]; S.groups.forEach(g=>{ if(!seen.includes(g.answer)) seen.push(g.answer) }); return seen }
+function answerHint(a){
+  if(S.cfg.answers[a]) return S.cfg.answers[a];
+  const gs = S.groups.filter(g=>g.answer===a);
+  return gs.length===1 ? gs[0].sub : gs.map(g=>g.label).join(", ");
+}
+function pool(){
+  const o=S.opts;
+  return S.species.filter(sp=>{
+    if(hasGroups() && o.groups && !o.groups.has(sp.group)) return false;
+    if(S.cfg.tags && o.tags && !sp.tags.some(t=>o.tags.has(t))) return false;
+    return true;
+  });
+}
+function savePrefs(){try{localStorage.setItem("fq:prefs",JSON.stringify({mode:S.opts.mode,answer:S.opts.answer,length:S.opts.length}))}catch(e){}}
+try{const p=JSON.parse(localStorage.getItem("fq:prefs")||"null");if(p){Object.assign(S.opts,{mode:p.mode||"two",answer:p.answer||"choices",length:p.length||10})}}catch(e){}
+
+/* ===================== Loading a quiz ===================== */
+async function loadQuiz(rawCfg, src){
+  S.cfg = normalize(rawCfg); S.src = src||{};
+  S.loading = "Loading species from iNaturalist…"; S.error=null; S.view="quiz"; S.quiz=null; photoCache.clear(); render();
+  try{
+    const r = await buildSpecies(S.cfg, msg=>{S.loading=msg;render()});
+    S.species=r.species; S.place=r.place; S.fallback=r.fallback; S.taxon=r.taxon;
+    S.groups = deriveGroups(S.cfg,S.species);
+    S.opts.groups = new Set(S.groups.map(g=>g.name));
+    S.opts.tags = S.cfg.tags ? new Set(Object.keys(S.cfg.tags.values||{})) : null;
+    if(!hasGroups() && S.opts.mode!=="species") S.opts.mode="species";
+    else if(hasGroups() && S.opts.mode==="species" && !S.userPickedMode) S.opts.mode="two";
+    S.loading=null; S.view="setup";
+  }catch(e){ S.loading=null; S.error=e.message||String(e); S.view="setup" }
+  render();
+}
+
+/* ===================== Views ===================== */
+const app = document.getElementById("app");
+function setChrome(){
+  const ready = !!(S.cfg && S.species.length);
+  const b = document.getElementById("brand");
+  b.innerHTML = ready ? `${esc(title())}<small>${esc(S.cfg.subtitle || (S.species.length+" species · photos from iNaturalist"))}</small>` : `Field Quiz<small>Photo ID quizzes from iNaturalist</small>`;
+  document.title = ready ? title() : "Field Quiz";
+  const cur = S.view==="guide"?"guide":S.view==="make"?"make":"quiz";
+  for(const [id,v] of [["nav-quiz","quiz"],["nav-guide","guide"],["nav-make","make"]]){
+    const el=document.getElementById(id); el.setAttribute("aria-current",cur===v?"page":"false");
+    if(v!=="make") el.disabled = !ready && !S.loading;
+  }
+}
+document.getElementById("nav-quiz").onclick=()=>{S.view=S.quiz&&!S.quiz.done?"quiz":"setup";render()};
+document.getElementById("nav-guide").onclick=()=>{S.view="guide";render()};
+document.getElementById("nav-make").onclick=()=>{S.view="make";render()};
+
+function render(){
+  setChrome();
+  if(S.loading){ app.innerHTML=`<div class="panel"><h2>Getting ready</h2><p class="lede">${esc(S.loading)}</p></div>`; return }
+  if(S.view==="make") renderMake();
+  else if(S.view==="guide") renderGuide();
+  else if(S.view==="quiz" && S.quiz) renderQuiz();
+  else if(S.view==="results") renderResults();
+  else renderSetup();
+  postHeight();
+}
+
+function chip(name,value,label,checked,type="checkbox",extra=""){
+  return `<label class="chip"><input type="${type}" name="${name}" value="${esc(value)}" ${checked?"checked":""}><span>${esc(label)}${extra}</span></label>`;
+}
+function renderSetup(){
+  if(S.error){
+    app.innerHTML=`<div class="stack"><div class="errbox"><b>Couldn't build this quiz.</b> ${esc(S.error)}</div><div class="row"><button class="btn" id="retry">Try again</button><button class="btn ghost" id="tomake">Change the quiz</button></div></div>`;
+    document.getElementById("retry").onclick=()=>loadQuiz(S.cfgRaw||{},S.src);
+    document.getElementById("tomake").onclick=()=>{S.view="make";render()};
+    return;
+  }
+  if(!S.cfg){ S.view="make"; return renderMake() }
+  const p = pool(), o = S.opts, cfg = S.cfg;
+  const where = S.place ? (S.place.name||"this place") : "anywhere";
+  app.innerHTML = `
+  <div class="stack">
+    <div>
+      <h1>${esc(title())}</h1>
+      <p class="lede">${esc(cfg.intro || `${S.species.length} species, chosen from research-grade iNaturalist observations in ${where}. Look at the photo, then name it.`)}</p>
+    </div>
+    <form class="panel stack" id="setup">
+      ${hasGroups()?`<div class="field"><span class="label">Questions</span><div class="chips">
+        ${chip("mode","two",`${groupQ().replace(/\?$/,"")}, then species`,o.mode==="two","radio")}
+        ${chip("mode","species","Species only",o.mode==="species","radio")}
+        ${chip("mode","group",`${noun()[0].toUpperCase()+noun().slice(1)} only`,o.mode==="group","radio")}
+      </div></div>
+      <div class="field"><span class="label">Include</span><div class="chips">
+        ${S.groups.map(g=>chip("grp",g.name,g.label,o.groups.has(g.name),"checkbox",` <small>${g.count}</small>`)).join("")}
+      </div></div>`:""}
+      ${cfg.tags?`<div class="field"><span class="label">${esc(cfg.tags.label||"Filter")}</span><div class="chips">
+        ${Object.entries(cfg.tags.values||{}).map(([k,v])=>chip("tag",k,v,o.tags.has(k))).join("")}
+      </div></div>`:""}
+      <div class="field" ${o.mode==="group"?"hidden":""}><span class="label">Answer by</span><div class="chips">
+        ${chip("answer","choices","Multiple choice",o.answer==="choices","radio")}
+        ${chip("answer","type","Typing the name (harder)",o.answer==="type","radio")}
+      </div></div>
+      <div class="field"><span class="label">Photos</span><div class="chips">
+        ${[10,20,40].map(n=>chip("len",n,String(n),o.length===n,"radio")).join("")}
+      </div></div>
+      <div class="row">
+        <button class="btn" type="submit" ${p.length<2?"disabled":""}>Start quiz</button>
+        <span class="count">${p.length} species in play</span>
+      </div>
+      ${p.length<2?`<div class="warnbox">Include more ${esc(noun())}s${cfg.tags?" or areas":""}. The quiz needs at least 2 species.</div>`:""}
+    </form>
+    ${cfg.fieldRule?`<p class="note">${esc(cfg.fieldRule)}</p>`:""}
+  </div>`;
+  const f=document.getElementById("setup");
+  f.addEventListener("change",e=>{
+    const t=e.target;
+    if(t.name==="mode"){S.opts.mode=t.value;S.userPickedMode=true}
+    if(t.name==="answer") S.opts.answer=t.value;
+    if(t.name==="len") S.opts.length=+t.value;
+    if(t.name==="grp") t.checked?S.opts.groups.add(t.value):S.opts.groups.delete(t.value);
+    if(t.name==="tag") t.checked?S.opts.tags.add(t.value):S.opts.tags.delete(t.value);
+    savePrefs(); renderSetup(); postHeight();
+  });
+  f.addEventListener("submit",e=>{e.preventDefault();startQuiz(pool())});
+}
+
+/* ----- quiz ----- */
+function startQuiz(list,label){
+  let order=[]; while(order.length<S.opts.length) order=order.concat(shuffle(list));
+  S.quiz={pool:list,order:order.slice(0,S.opts.length),i:0,score:0,groupScore:0,results:[],q:null,done:false,label:label||null,skipped:new Set()};
+  S.view="quiz"; nextQuestion();
+}
+async function nextQuestion(){
+  const Q=S.quiz;
+  if(Q.i>=Q.order.length){Q.done=true;S.view="results";render();return}
+  let sp=Q.order[Q.i];
+  const mode=S.opts.mode;
+  Q.q={sp,stage:(mode==="two"||mode==="group")&&hasGroups()?"group":"species",photo:null,error:null,groupPick:null,pick:null,photoIdx:0,photos:[]};
+  render();
+  try{
+    let d=await photosFor(sp), tries=0;
+    while(!d.photos.length && tries<8){
+      Q.skipped.add(sp.key);
+      const alt=shuffle(Q.pool.filter(x=>!Q.skipped.has(x.key)))[0]; if(!alt) break;
+      sp=Q.order[Q.i]=alt; Q.q.sp=sp; d=await photosFor(sp); tries++;
+    }
+    if(Q.q.sp!==sp) return;
+    if(!d.photos.length) throw new Error("No photos found for these species.");
+    Q.q.photos=shuffle(d.photos); Q.q.taxonId=d.taxonId; Q.q.photo=Q.q.photos[0];
+  }catch(err){ Q.q.error=err.message||String(err) }
+  if(S.view==="quiz"&&S.quiz===Q) renderQuiz();
+  const nxt=Q.order[Q.i+1]; if(nxt) photosFor(nxt).catch(()=>{});
+}
+function distractors(sp,poolList){
+  const others=S.species.filter(x=>x.key!==sp.key), inPool=new Set(poolList.map(x=>x.key));
+  const genus=sp.sci.split(" ")[0];
+  const tiers=[
+    others.filter(x=>sp.look&&x.look===sp.look&&inPool.has(x.key)),
+    others.filter(x=>x.sci.split(" ")[0]===genus),
+    others.filter(x=>sp.group&&x.group===sp.group&&inPool.has(x.key)),
+    others.filter(x=>sp.look&&x.look===sp.look),
+    others.filter(x=>sp.group&&x.group===sp.group),
+    others.filter(x=>inPool.has(x.key)),
+    others];
+  const pick=[];
+  for(const t of tiers) for(const x of shuffle(t)){ if(pick.length>=3) break; if(!pick.includes(x)) pick.push(x) }
+  return shuffle([sp,...pick]);
+}
+function groupChoices(sp){
+  const all=answersList(), right=groupOf(sp).answer;
+  if(all.length<=6) return all;
+  return shuffle([right,...shuffle(all.filter(a=>a!==right)).slice(0,3)]);
+}
+function renderQuiz(){
+  const Q=S.quiz, q=Q.q; if(!q) return;
+  const sp=q.sp, n=Q.order.length, mode=S.opts.mode, g=groupOf(sp), twoStep=mode==="two"&&hasGroups();
+  let photoHtml;
+  if(q.error) photoHtml=`<div class="loading">Couldn't load photos from iNaturalist: ${esc(q.error)}<br><br><button class="btn" id="retry">Retry</button></div>`;
+  else if(!q.photo) photoHtml=`<div class="loading">Fetching photos from iNaturalist…</div>`;
+  else photoHtml=`<img id="ph" src="${esc(q.photo.src)}" alt="Mystery organism, photo ${Q.i+1}">`;
+  let ask="";
+  if(q.photo && q.stage==="group"){
+    if(!q.gchoices) q.gchoices=groupChoices(sp);
+    ask=`<div class="ask">${esc(groupQ())}</div><div class="choices">${q.gchoices.map((a,k)=>{const h=answerHint(a);return `<button class="choice" data-g="${esc(a)}"><kbd>${k+1}</kbd><b>${esc(a)}</b>${h?`<small>${esc(h)}</small>`:""}</button>`}).join("")}</div>`;
+  } else if(q.photo && q.stage==="species"){
+    if(!q.choices) q.choices=distractors(sp,Q.pool);
+    const gOk = q.groupPick===(g&&g.answer);
+    ask=`<div class="ask">${twoStep?`<span class="badge ${gOk?"tone-safe":"tone-danger"}">${gOk?"Right "+esc(noun()):"Wrong "+esc(noun())+": "+esc(g.answer)}</span>`:""}Which species?</div>`+
+    (S.opts.answer==="choices"
+      ? `<div class="choices">${q.choices.map((c,k)=>`<button class="choice" data-sp="${esc(c.key)}"><kbd>${k+1}</kbd>${nameHtml(c)}</button>`).join("")}</div>`
+      : `<form class="typein" id="typein"><input type="text" id="guess" list="names" autocomplete="off" placeholder="Common or scientific name" aria-label="Your answer"><datalist id="names">${S.species.map(x=>(x.common?`<option value="${esc(x.common)}"></option>`:"")+`<option value="${esc(x.sci)}"></option>`).join("")}</datalist><button class="btn" type="submit">Check</button><button class="btn ghost" type="button" id="giveup">Show me</button></form>`);
+  } else if(q.stage==="done"){
+    const groupOnly = mode==="group";
+    const ok = groupOnly ? q.groupPick===g.answer : q.pick===sp.key;
+    const gOk = !twoStep || q.groupPick===g.answer;
+    const choicesShown = groupOnly ? (q.gchoices||[]).map((a,k)=>`<button class="choice ${a===g.answer?"right":a===q.groupPick?"wrong":""}" disabled><kbd>${k+1}</kbd><b>${esc(a)}</b></button>`).join("")
+      : (S.opts.answer==="choices"&&q.choices ? q.choices.map((c,k)=>`<button class="choice ${c.key===sp.key?"right":c.key===q.pick?"wrong":""}" disabled><kbd>${k+1}</kbd>${nameHtml(c)}</button>`).join("") : "");
+    ask=(choicesShown?`<div class="choices" style="margin-top:18px">${choicesShown}</div>`:"")+`
+    <div class="reveal ${ok&&gOk?"":"bad"}">
+      <div class="verdict ${ok?"ok":"no"}">${ok?"Correct":"Not quite"}${twoStep?` · ${esc(noun())} ${gOk?"right":"wrong"}`:""}</div>
+      <h3>${esc(sp.common||sp.sci)}</h3>
+      ${sp.common?`<div class="sci">${esc(sp.sci)}</div>`:""}
+      ${g?`<p style="margin:.5rem 0">${badgeFor(g)} ${g.sub?`<span class="note">${esc(g.sub)}</span>`:""}</p>`:""}
+      ${sp.note?`<p style="margin:.25rem 0">${esc(sp.note)}</p>`:""}
+      <p class="note" style="margin:.5rem 0 0">${q.photo.place?esc(q.photo.place)+" · ":""}${q.photo.outside?"Photo from outside the quiz area · ":""}<a href="${esc(q.photo.obs)}" target="_blank" rel="noopener">See this observation</a>${q.taxonId?` · <a href="https://www.inaturalist.org/taxa/${q.taxonId}" target="_blank" rel="noopener">Species page</a>`:""}</p>
+    </div>
+    <div class="row" style="margin-top:14px"><button class="btn" id="next">${Q.i+1>=n?"See results":"Next photo"}</button></div>`;
+  }
+  const scoreTxt = mode==="group" ? `${noun()[0].toUpperCase()+noun().slice(1)} ${Q.groupScore}/${Q.results.length}` : `Species ${Q.score}/${Q.results.length}${twoStep?` · ${noun()[0].toUpperCase()+noun().slice(1)} ${Q.groupScore}/${Q.results.length}`:""}`;
+  app.innerHTML=`
+   <div class="qhead"><h2>${Q.label?esc(Q.label)+" · ":""}Photo ${Q.i+1} of ${n}</h2><span class="score">${esc(scoreTxt)}</span></div>
+   <div class="photo" id="frame">${photoHtml}</div>
+   <div class="credit">${q.photo?esc(q.photo.credit):""}${q.photo&&q.photos.length>1&&q.stage!=="done"?` · <a href="#" id="another">Different photo of this one</a>`:""}</div>
+   ${ask}
+   <div class="row" style="margin-top:22px"><button class="btn ghost" id="quit">End quiz</button></div>`;
+  const ph=document.getElementById("ph");
+  if(ph){ ph.onclick=()=>document.getElementById("frame").classList.toggle("zoom");
+          ph.onerror=()=>{ if(q.photos.length>1){q.photos.splice(q.photoIdx,1);q.photoIdx=0;q.photo=q.photos[0];renderQuiz()} };
+          ph.onload=postHeight; }
+  const rt=document.getElementById("retry"); if(rt) rt.onclick=()=>{photoCache.delete(sp.key);nextQuestion()};
+  const an=document.getElementById("another"); if(an) an.onclick=e=>{e.preventDefault();q.photoIdx=(q.photoIdx+1)%q.photos.length;q.photo=q.photos[q.photoIdx];renderQuiz()};
+  app.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>{q.groupPick=b.dataset.g; if(mode==="group") finish(null); else {q.stage="species";renderQuiz()}});
+  app.querySelectorAll("[data-sp]").forEach(b=>b.onclick=()=>finish(b.dataset.sp));
+  const ti=document.getElementById("typein");
+  if(ti){ const gi=document.getElementById("guess"); gi.focus({preventScroll:true});
+    ti.onsubmit=e=>{e.preventDefault();const v=norm(gi.value);if(!v)return;const hit=S.species.find(x=>(x.common&&norm(x.common)===v)||norm(x.sci)===v);finish(hit?hit.key:"none")};
+    document.getElementById("giveup").onclick=()=>finish("none"); }
+  const nx=document.getElementById("next"); if(nx){nx.onclick=()=>{Q.i++;nextQuestion()};nx.focus({preventScroll:true})}
+  document.getElementById("quit").onclick=()=>{Q.done=true;S.view="results";render()};
+  postHeight();
+}
+function finish(key){
+  const Q=S.quiz,q=Q.q,sp=q.sp,g=groupOf(sp),mode=S.opts.mode;
+  q.pick=key; q.stage="done";
+  const gOk = g ? q.groupPick===g.answer : true;
+  const ok = mode==="group" ? gOk : key===sp.key;
+  if(mode!=="group" && ok) Q.score++;
+  if((mode==="two"||mode==="group") && hasGroups() && gOk) Q.groupScore++;
+  Q.results.push({sp,ok,gOk:(mode==="two"&&hasGroups())?gOk:true,pick:key,groupPick:q.groupPick});
+  renderQuiz();
+}
+document.addEventListener("keydown",e=>{
+  if(S.view!=="quiz"||/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return;
+  const k=parseInt(e.key,10);
+  if(k>=1&&k<=9){const btns=app.querySelectorAll(".choice:not([disabled])");if(btns[k-1]){e.preventDefault();btns[k-1].click()}}
+  if(e.key==="Enter"){const nx=document.getElementById("next");if(nx&&document.activeElement!==nx){e.preventDefault();nx.click()}}
+});
+
+function renderResults(){
+  const Q=S.quiz, n=Q.results.length, mode=S.opts.mode, two=mode==="two"&&hasGroups();
+  const missed=[], seen=new Set();
+  for(const r of Q.results) if((!r.ok||!r.gOk)&&!seen.has(r.sp.key)){seen.add(r.sp.key);missed.push(r)}
+  const cap=s=>s[0].toUpperCase()+s.slice(1);
+  app.innerHTML=`
+  <div class="stack">
+    <h1>Results</h1>
+    <div class="panel row" style="gap:32px">
+      ${mode!=="group"?`<div><div class="big">${Q.score}/${n}</div><div class="label">Species named</div></div>`:""}
+      ${mode!=="species"&&hasGroups()?`<div><div class="big">${Q.groupScore}/${n}</div><div class="label">${esc(cap(noun()))} right</div></div>`:""}
+    </div>
+    ${missed.length?`<div class="panel stack"><h2>To review</h2><ul class="missed">${missed.map(r=>{
+      const wrongSp = r.pick && r.pick!=="none" && r.pick!==r.sp.key ? S.species.find(x=>x.key===r.pick) : null;
+      return `<li>${badgeFor(groupOf(r.sp))} <b>${esc(r.sp.common||r.sp.sci)}</b> ${r.sp.common?`<i class="note">${esc(r.sp.sci)}</i>`:""}${wrongSp?`<span class="note">· you said ${esc(wrongSp.common||wrongSp.sci)}</span>`:""}${!r.gOk||(mode==="group"&&!r.ok)?`<span class="note">· ${esc(noun())} answer: ${esc(r.groupPick||"none")}</span>`:""}</li>`}).join("")}</ul></div>`
+      : (n?`<p class="lede">Clean sweep.</p>`:"")}
+    <div class="row">
+      ${missed.length?`<button class="btn" id="drill">Drill these ${missed.length}</button>`:""}
+      <button class="btn ${missed.length?"ghost":""}" id="again">New quiz</button>
+      <button class="btn ghost" id="guide">Open field guide</button>
+    </div>
+  </div>`;
+  const d=document.getElementById("drill");
+  if(d) d.onclick=()=>{const keys=new Set(missed.map(r=>r.sp.key));const base=missed.map(r=>r.sp);const extra=shuffle(Q.pool.filter(x=>!keys.has(x.key))).slice(0,Math.max(0,4-base.length));startQuiz(base.concat(extra),"Review")};
+  document.getElementById("again").onclick=()=>{S.view="setup";render()};
+  document.getElementById("guide").onclick=()=>{S.view="guide";render()};
+}
+
+/* ----- field guide ----- */
+let thumbObserver=null;
+function renderGuide(){
+  const F=S.guide, cfg=S.cfg;
+  app.innerHTML=`
+   <h1>Field guide</h1>
+   <p class="lede">${S.species.length} species${S.place?" · "+esc(S.place.name||""):""}${cfg.groupBy!=="none"&&hasGroups()?`, grouped by ${esc(noun())}`:""}. Photos load from iNaturalist as you scroll.</p>
+   <div class="toolbar">
+     <input id="gq" type="search" placeholder="Search names${S.species.some(s=>s.note)?" or features":""}" value="${esc(F.q)}" aria-label="Search">
+     ${cfg.tags?`<select id="gt" aria-label="${esc(cfg.tags.label||"Filter")}"><option value="all">All</option>${Object.entries(cfg.tags.values||{}).map(([k,v])=>`<option value="${esc(k)}" ${F.tag===k?"selected":""}>${esc(v)}</option>`).join("")}</select>`:""}
+   </div>
+   <div class="grid" id="grid"></div>`;
+  const draw=()=>{
+    const q=norm(F.q);
+    const sections = hasGroups()? S.groups : [{name:null,label:"",sub:""}];
+    const html=sections.map(g=>{
+      const list=S.species.filter(sp=>(g.name===null||sp.group===g.name)&&(F.tag==="all"||sp.tags.includes(F.tag))&&(!q||norm(sp.common+" "+sp.sci+" "+sp.note).includes(q)));
+      if(!list.length) return "";
+      return (g.name!==null?`<h2 class="group-h">${esc(g.label)} ${g.sub?`<small>${esc(g.sub)}</small>`:""}<span class="count" style="font-size:1rem">${list.length}</span></h2>`:"")+list.map(sp=>`
+        <article class="card">
+          <div class="thumb" data-thumb="${esc(sp.key)}">Loading photo…</div>
+          <div class="body">
+            ${g.name!==null?`<div>${badgeFor(g)}</div>`:""}
+            <h3>${esc(sp.common||sp.sci)}</h3>
+            ${sp.common?`<div class="sci">${esc(sp.sci)}</div>`:""}
+            ${sp.note?`<div>${esc(sp.note)}</div>`:""}
+            <div class="meta">${cfg.tags&&sp.tags.length?sp.tags.map(t=>esc((cfg.tags.values||{})[t]||t)).join(" · "):""}${sp.count!=null?`${sp.count.toLocaleString()} observations here`:""}</div>
+            <div class="note" data-links="${esc(sp.key)}">${sp.taxonId?`<a href="https://www.inaturalist.org/taxa/${sp.taxonId}" target="_blank" rel="noopener">iNaturalist page</a>`:""}</div>
+          </div>
+        </article>`).join("");
+    }).join("");
+    const grid=document.getElementById("grid");
+    grid.innerHTML=html||`<p class="lede">No matches.</p>`;
+    if(thumbObserver) thumbObserver.disconnect();
+    thumbObserver=new IntersectionObserver(ents=>{for(const en of ents){ if(!en.isIntersecting) continue; thumbObserver.unobserve(en.target); loadThumb(en.target) }},{rootMargin:"300px"});
+    grid.querySelectorAll("[data-thumb]").forEach(el=>thumbObserver.observe(el));
+    postHeight();
+  };
+  document.getElementById("gq").oninput=e=>{F.q=e.target.value;draw()};
+  const gt=document.getElementById("gt"); if(gt) gt.onchange=e=>{F.tag=e.target.value;draw()};
+  draw();
+}
+async function loadThumb(el){
+  const sp=S.species.find(s=>s.key===el.dataset.thumb); if(!sp) return;
+  const show=(src,credit,obs)=>{ el.innerHTML=`<img loading="lazy" src="${esc(src)}" alt="${esc(sp.common||sp.sci)}" title="${esc(credit)}">`; if(obs){const l=el.parentElement.querySelector("[data-links]"); if(l) l.innerHTML=`<a href="${esc(obs)}" target="_blank" rel="noopener">Photo</a>${sp.taxonId||sp._tid?` · <a href="https://www.inaturalist.org/taxa/${sp.taxonId||sp._tid}" target="_blank" rel="noopener">iNaturalist page</a>`:""}`} };
+  if(sp.thumb && (S.cfg.photoLicense!=="cc" || sp.thumb.license)){ show(sp.thumb.src,sp.thumb.credit); return }
+  try{
+    const d=await photosFor(sp);
+    if(!d.photos.length){el.textContent="No iNaturalist photos yet";return}
+    sp._tid=d.taxonId; const p=d.photos[0]; show(p.src.replace("/large.","/medium."),p.credit,p.obs);
+  }catch(e){el.textContent="Photo unavailable"}
+}
+
+/* ----- builder ----- */
+const RANKS=[["family","Family"],["subfamily","Subfamily"],["order","Order"],["genus","Genus"],["tribe","Tribe"],["none","No groups"]];
+const LANGS=[["en","English"],["es","Español"],["pt","Português"],["fr","Français"],["de","Deutsch"],["it","Italiano"],["nl","Nederlands"],["ja","日本語"],["zh-CN","中文"]];
+const B={taxon:null,place:null,n:50,group:"family",lang:"en",license:"any",title:"",taxonOpts:{},placeOpts:{}};
+function renderMake(){
+  if(S.cfg && !S.cfg.species && !B.taxon && S.cfg.taxon){ /* start from current quiz */
+    B.taxon = S.taxon?{id:S.taxon.id,label:S.taxon.name}:null; B.place=S.place?{id:S.place.id,label:S.place.name}:null;
+    B.n=S.cfg.speciesCount; B.group=S.cfg.groupBy; B.lang=S.cfg.locale; B.license=S.cfg.photoLicense; B.title=S.cfg.title;
+  }
+  app.innerHTML=`
+  <div class="stack">
+    <div>
+      <h1>Make a quiz</h1>
+      <p class="lede">Pick any group of organisms and any place. The quiz uses the species most often recorded there on iNaturalist, with photos from real observations.</p>
+    </div>
+    ${Object.keys(PRESETS).length?`<div class="stack" style="gap:10px"><span class="label">Examples</span><div class="presets">${Object.entries(PRESETS).map(([k,p])=>`<button class="preset" data-preset="${esc(k)}"><b>${esc(p.title||k)}</b><span class="note">${esc(p.subtitle||"")}</span></button>`).join("")}</div></div>`:""}
+    <form class="panel stack" id="make" autocomplete="off">
+      <div class="grid2">
+        <div class="field"><label class="label" for="b-taxon">What to learn</label>
+          <input type="text" id="b-taxon" list="b-taxon-list" placeholder="e.g. Butterflies, Papilionoidea, Hawks" value="${esc(B.taxon?B.taxon.label:"")}">
+          <datalist id="b-taxon-list"></datalist><span class="note" id="b-taxon-ok">${B.taxon?`iNaturalist taxon ${B.taxon.id}`:"Type a common or scientific name, then pick from the list."}</span></div>
+        <div class="field"><label class="label" for="b-place">Where</label>
+          <input type="text" id="b-place" list="b-place-list" placeholder="e.g. Lima, Queensland, Connecticut" value="${esc(B.place?B.place.label:"")}">
+          <datalist id="b-place-list"></datalist><span class="note" id="b-place-ok">${B.place?`iNaturalist place ${B.place.id}`:"Leave empty for worldwide."}</span></div>
+      </div>
+      <div class="grid2">
+        <div class="field"><label class="label" for="b-n">Number of species</label><select id="b-n">${[25,50,100,200].map(v=>`<option ${B.n===v?"selected":""}>${v}</option>`).join("")}</select></div>
+        <div class="field"><label class="label" for="b-group">Group answers by</label><select id="b-group">${RANKS.map(([v,l])=>`<option value="${v}" ${B.group===v?"selected":""}>${l}</option>`).join("")}</select></div>
+        <div class="field"><label class="label" for="b-lang">Common names in</label><select id="b-lang">${LANGS.map(([v,l])=>`<option value="${v}" ${B.lang===v?"selected":""}>${l}</option>`).join("")}</select></div>
+        <div class="field"><label class="label" for="b-license">Photos</label><select id="b-license"><option value="any" ${B.license==="any"?"selected":""}>All photos</option><option value="cc" ${B.license==="cc"?"selected":""}>Creative Commons only</option></select></div>
+      </div>
+      <div class="field"><label class="label" for="b-title">Title (optional)</label><input type="text" id="b-title" value="${esc(B.title)}" placeholder="e.g. Butterflies of Lima"></div>
+      <div class="row"><button class="btn" type="submit" id="b-go">Build quiz</button><span class="note" id="b-msg"></span></div>
+    </form>
+    <div class="panel share" id="share" ${S.cfg?"":"hidden"}>
+      <h2>Share or embed this quiz</h2>
+      <div class="field"><span class="label">Link</span><div class="row"><input type="text" id="s-link" readonly><button class="btn small ghost" data-copy="s-link">Copy</button></div>
+        <span class="note">Works once this page is online (for example on GitHub Pages). Anyone opening the link gets this quiz.</span></div>
+      <div class="field"><span class="label">Embed code for a blog post</span><div class="row"><input type="text" id="s-embed" readonly><button class="btn small ghost" data-copy="s-embed">Copy</button></div></div>
+      <div class="field"><span class="label">Config</span><textarea id="s-config" rows="8" readonly></textarea>
+        <div class="row"><button class="btn small ghost" data-copy="s-config">Copy</button><button class="btn small ghost" id="s-dl">Download config.json</button></div>
+        <span class="note">Edit this to add your own notes, groups or a hand-picked species list. See README.md for every option.</span></div>
+    </div>
+    <div class="panel stack">
+      <h2>Load a config</h2>
+      <p class="note" style="margin:0">Open a config.json file, or paste one below.</p>
+      <input type="file" id="cfg-file" accept=".json,application/json">
+      <textarea id="cfg-paste" rows="5" placeholder='{"title":"…","taxon":47224,"place":97128}'></textarea>
+      <div class="row"><button class="btn ghost" id="cfg-load">Load pasted config</button><span class="note" id="cfg-msg"></span></div>
+    </div>
+  </div>`;
+  fillShare();
+  app.querySelectorAll("[data-preset]").forEach(b=>b.onclick=()=>{setUrl({preset:b.dataset.preset});S.cfgRaw=PRESETS[b.dataset.preset];loadQuiz(S.cfgRaw,{preset:b.dataset.preset})});
+  hookAuto("b-taxon",async q=>{const r=await apiGet("/taxa/autocomplete?per_page=12&locale="+B.lang+"&q="+encodeURIComponent(q));return (r.results||[]).map(t=>({id:t.id,label:`${t.preferred_common_name?t.preferred_common_name+" — ":""}${t.name} (${t.rank})`}))},v=>{B.taxon=v},"taxon");
+  hookAuto("b-place",async q=>{const r=await apiGet("/places/autocomplete?per_page=12&q="+encodeURIComponent(q));return (r.results||[]).map(p=>({id:p.id,label:p.display_name}))},v=>{B.place=v},"place");
+  const f=document.getElementById("make");
+  f.onchange=e=>{const t=e.target; if(t.id==="b-n")B.n=+t.value; if(t.id==="b-group")B.group=t.value; if(t.id==="b-lang")B.lang=t.value; if(t.id==="b-license")B.license=t.value; if(t.id==="b-title")B.title=t.value};
+  f.onsubmit=async e=>{
+    e.preventDefault(); B.title=document.getElementById("b-title").value.trim();
+    const msg=document.getElementById("b-msg");
+    if(!B.taxon){ const raw=document.getElementById("b-taxon").value.trim(); if(!raw){msg.textContent="Choose what to learn first.";return}
+      try{msg.textContent="Looking up "+raw+"…";const t=await resolveTaxon(raw);B.taxon={id:t.id,label:t.name}}catch(err){msg.textContent=err.message;return} }
+    if(!B.place){ const raw=document.getElementById("b-place").value.trim(); if(raw){ try{msg.textContent="Looking up "+raw+"…";const p=await resolvePlace(raw);B.place={id:p.id,label:p.name}}catch(err){msg.textContent=err.message;return} } }
+    const cfg={title:B.title,taxon:{id:B.taxon.id,name:B.taxon.label},place:B.place?{id:B.place.id,name:B.place.label}:null,speciesCount:B.n,groupBy:B.group,locale:B.lang,photoLicense:B.license};
+    setUrl({taxon:B.taxon.id,place:B.place&&B.place.id,n:B.n,group:B.group,lang:B.lang,license:B.license!=="any"?B.license:null,title:B.title||null});
+    S.cfgRaw=cfg; loadQuiz(cfg,{params:true});
+  };
+  app.querySelectorAll("[data-copy]").forEach(b=>b.onclick=async e=>{e.preventDefault();const el=document.getElementById(b.dataset.copy);try{await navigator.clipboard.writeText(el.value);b.textContent="Copied"}catch(err){el.select()}setTimeout(()=>b.textContent="Copy",1500)});
+  const dl=document.getElementById("s-dl"); if(dl) dl.onclick=e=>{e.preventDefault();const blob=new Blob([document.getElementById("s-config").value],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="config.json";document.body.appendChild(a);a.click();a.remove()};
+  const fileIn=document.getElementById("cfg-file");
+  fileIn.onchange=()=>{const file=fileIn.files[0];if(!file)return;const rd=new FileReader();rd.onload=()=>tryLoad(rd.result);rd.readAsText(file)};
+  document.getElementById("cfg-load").onclick=()=>tryLoad(document.getElementById("cfg-paste").value);
+}
+function tryLoad(text){
+  const m=document.getElementById("cfg-msg");
+  try{const c=JSON.parse(text);setUrl({});S.cfgRaw=c;loadQuiz(c,{embedded:true})}catch(e){m.textContent="That isn't valid JSON: "+e.message}
+}
+function hookAuto(id,search,setVal,kind){
+  const input=document.getElementById(id), list=document.getElementById(id+"-list"), ok=document.getElementById(id+"-ok");
+  let timer=null, opts=[];
+  input.addEventListener("input",()=>{
+    const v=input.value.trim(); const hit=opts.find(o=>o.label===v);
+    if(hit){ setVal({id:hit.id,label:hit.label}); ok.textContent=`iNaturalist ${kind} ${hit.id}`; return }
+    setVal(null); ok.textContent= kind==="place" ? "Leave empty for worldwide." : "Type a common or scientific name, then pick from the list.";
+    clearTimeout(timer); if(v.length<2) return;
+    timer=setTimeout(async()=>{ try{ opts=await search(v); list.innerHTML=opts.map(o=>`<option value="${esc(o.label)}"></option>`).join("") }catch(e){ ok.textContent=e.message } },400);
+  });
+}
+function setUrl(params){
+  try{
+    const u=new URL(location.href); u.search="";
+    Object.entries(params).forEach(([k,v])=>{ if(v!=null&&v!=="") u.searchParams.set(k,v) });
+    history.replaceState(null,"",u);
+  }catch(e){}
+}
+function fillShare(){
+  const box=document.getElementById("share"); if(!box||!S.cfg) return;
+  const link=location.href;
+  document.getElementById("s-link").value=link;
+  document.getElementById("s-embed").value=`<iframe src="${link}" style="width:100%;height:900px;border:0" loading="lazy" title="${esc(title())}"></iframe>`;
+  const raw = S.cfgRaw || {};
+  document.getElementById("s-config").value=JSON.stringify(raw,null,2);
+}
+
+/* ----- embedding: tell a parent page how tall we are ----- */
+function postHeight(){
+  if(window.parent===window) return;
+  requestAnimationFrame(()=>{ try{ window.parent.postMessage({type:"field-quiz-height",height:Math.ceil(document.body.getBoundingClientRect().height)},"*") }catch(e){} });
+}
+window.addEventListener("resize",postHeight);
+
+/* ===================== Start ===================== */
+(async()=>{
+  try{
+    const init = await initialConfig();
+    if(init){ S.cfgRaw=init.cfg; await loadQuiz(init.cfg,init.src) }
+    else { S.view="make"; render() }
+  }catch(e){ S.error=e.message; S.cfg=null; S.view="make"; render(); app.insertAdjacentHTML("afterbegin",`<div class="errbox" style="margin-bottom:16px">${esc(e.message)}</div>`) }
+})();
+</script>
+</body>
+</html>
