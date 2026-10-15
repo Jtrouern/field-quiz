@@ -4,7 +4,7 @@ An eBird-style photo quiz for any group of organisms, anywhere in the world, bui
 
 Pick a group (butterflies, snakes, hawks, oaks) and a place (Lima, Queensland, Connecticut). The quiz finds the species most often recorded there, pulls research-grade photos from real iNaturalist observations, and asks you to name them. It also builds a field guide page for the same species.
 
-**Play it:** [Butterflies of Lima](https://jtrouern.github.io/field-quiz/?preset=lima-butterflies) · [Queensland Snake ID](https://jtrouern.github.io/field-quiz/?preset=queensland-snakes) · [Make your own](https://jtrouern.github.io/field-quiz/)
+**Play it:** [Butterflies of Lima](https://jtrouern.github.io/field-quiz/?preset=lima-butterflies) · [Queensland Snake ID](https://jtrouern.github.io/field-quiz/?preset=queensland-snakes) · [Dangerous Animals of Queensland](https://jtrouern.github.io/field-quiz/?preset=queensland-dangers) · [Make your own](https://jtrouern.github.io/field-quiz/)
 
 It is one HTML file with no build step and no server. Everything runs in the visitor's browser and talks directly to the public iNaturalist API.
 
@@ -15,6 +15,7 @@ It is one HTML file with no build step and no server. Everything runs in the vis
 | `index.html` | The whole app. Open it in a browser. |
 | `configs/lima-butterflies.json` | Example of an automatic quiz: butterflies of Lima Province, Peru, grouped by family. |
 | `configs/queensland-snakes.json` | Example of a hand-built quiz: 93 Queensland snakes and legless lizards, with danger levels, field notes and regions. |
+| `queensland-dangers.json` | Example of a three-answer quiz: 75 Queensland animals other than snakes, rated lethal, dangerous or harmless, with look-alikes as wrong answers. |
 | `README.md` | This file. |
 | `LICENSE` | MIT licence. |
 

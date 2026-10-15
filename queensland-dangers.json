@@ -1,0 +1,824 @@
+{
+ "title": "Dangerous Animals of Queensland",
+ "subtitle": "Lethal, dangerous or harmless? Beyond the snakes",
+ "intro": "Real photos from iNaturalist observers in Queensland. Decide how dangerous each animal is, then name it.",
+ "fieldRule": "Field rule: from October to May, wear a stinger suit in tropical Queensland waters and treat every jellyfish as dangerous.",
+ "place": {
+  "id": 7308,
+  "name": "Queensland, Australia"
+ },
+ "fallbackPlace": {
+  "id": 6744,
+  "name": "Australia"
+ },
+ "groupBy": "custom",
+ "groupNoun": "danger level",
+ "groupQuestion": "Lethal, dangerous or harmless?",
+ "groups": [
+  {
+   "name": "Lethal attack",
+   "tone": "danger",
+   "answer": "Lethal"
+  },
+  {
+   "name": "Lethal venom or toxin",
+   "tone": "danger",
+   "answer": "Lethal"
+  },
+  {
+   "name": "Lethal disease or allergy",
+   "tone": "danger",
+   "answer": "Lethal"
+  },
+  {
+   "name": "Dangerous venom or toxin",
+   "tone": "warn",
+   "answer": "Dangerous"
+  },
+  {
+   "name": "Dangerous bite, kick or claw",
+   "tone": "mild",
+   "answer": "Dangerous"
+  },
+  {
+   "name": "Harmless",
+   "tone": "safe",
+   "answer": "Harmless"
+  }
+ ],
+ "answers": {
+  "Lethal": "Has killed people in Australia",
+  "Dangerous": "Injury, envenomation or illness, rarely fatal",
+  "Harmless": "No real risk to people"
+ },
+ "tags": {
+  "label": "Where",
+  "values": {
+   "SEA": "Sea & reef",
+   "WATER": "Rivers, estuaries & wetlands",
+   "LAND": "Land"
+  }
+ },
+ "photoLicense": "cc",
+ "species": [
+  {
+   "name": "Crocodylus porosus",
+   "common": "Saltwater Crocodile",
+   "group": "Lethal attack",
+   "note": "Broad, heavy snout with no row of large scales behind the head. Lives in rivers, estuaries and the sea, and has killed many people in north Queensland.",
+   "tags": [
+    "WATER",
+    "SEA"
+   ],
+   "look": "croc"
+  },
+  {
+   "name": "Carcharhinus leucas",
+   "common": "Bull Shark",
+   "group": "Lethal attack",
+   "note": "Stocky grey shark with a short, blunt snout and small eyes. Swims far up rivers and canals, including the Brisbane River and Gold Coast waterways.",
+   "tags": [
+    "SEA",
+    "WATER"
+   ],
+   "look": "shark"
+  },
+  {
+   "name": "Galeocerdo cuvier",
+   "common": "Tiger Shark",
+   "group": "Lethal attack",
+   "note": "Wide, square snout; dark vertical bars on the back, strongest in young sharks. Responsible for many fatal attacks in Queensland waters.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "shark"
+  },
+  {
+   "name": "Carcharodon carcharias",
+   "common": "White Shark",
+   "group": "Lethal attack",
+   "note": "Torpedo-shaped, grey above and white below, with a conical snout and black eyes. Mostly south-east Queensland waters.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "shark"
+  },
+  {
+   "name": "Casuarius casuarius",
+   "common": "Southern Cassowary",
+   "group": "Lethal attack",
+   "note": "Tall, black-plumaged bird with a blue neck, red wattles and a horny casque. The inner toe has a dagger-like claw. Killed a teenager near Mossman in 1926.",
+   "tags": [
+    "LAND"
+   ],
+   "look": "bigbird"
+  },
+  {
+   "name": "Canis dingo",
+   "common": "Dingo",
+   "group": "Lethal attack",
+   "note": "Ginger to sandy dog with white feet and tail tip and upright ears. A boy was killed on K'gari (Fraser Island) in 2001.",
+   "tags": [
+    "LAND"
+   ],
+   "look": "mammal"
+  },
+  {
+   "name": "Chironex fleckeri",
+   "common": "Box Jellyfish",
+   "group": "Lethal venom or toxin",
+   "note": "Pale, cube-shaped bell up to 30 cm with bunches of tentacles at each corner. Nearly invisible in water. Can stop the heart within minutes. Coastal north Queensland, October to May.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "jelly"
+  },
+  {
+   "name": "Carukia barnesi",
+   "common": "Irukandji Jellyfish",
+   "group": "Lethal venom or toxin",
+   "note": "Tiny transparent box jelly, about 2 cm, with four long tentacles. The sting is mild at first; Irukandji syndrome follows 20 to 40 minutes later.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "jelly"
+  },
+  {
+   "name": "Malo kingi",
+   "common": "Malo Irukandji",
+   "group": "Lethal venom or toxin",
+   "note": "Small box jelly with four tentacles. Named after Robert King, who died after a sting off Port Douglas in 2002.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "jelly"
+  },
+  {
+   "name": "Hapalochlaena fasciata",
+   "common": "Blue-lined Octopus",
+   "group": "Lethal venom or toxin",
+   "note": "Small octopus with blue lines (not rings) that glow when it is alarmed. Bite is often painless; tetrodotoxin causes paralysis. There is no antivenom.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "octopus"
+  },
+  {
+   "name": "Hapalochlaena lunulata",
+   "common": "Greater Blue-ringed Octopus",
+   "group": "Lethal venom or toxin",
+   "note": "Golf-ball-sized octopus with large blue rings that flash when threatened. Rock pools and reef flats. There is no antivenom.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "octopus"
+  },
+  {
+   "name": "Conus geographus",
+   "common": "Geographic Cone Snail",
+   "group": "Lethal venom or toxin",
+   "note": "Thin, cone-shaped shell with brown map-like patches. Fires a venomous harpoon. A man died after picking one up on Hayman Island in 1935.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "shell"
+  },
+  {
+   "name": "Conus textile",
+   "common": "Textile Cone Snail",
+   "group": "Lethal venom or toxin",
+   "note": "Cone-shaped shell covered in a tent-like pattern of brown and white triangles. Same harpoon and venom as the geographic cone.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "shell"
+  },
+  {
+   "name": "Hadronyche infensa",
+   "common": "Darling Downs Funnel-web",
+   "group": "Lethal venom or toxin",
+   "note": "Glossy black spider with large fangs that point straight down. Rears up when threatened. Burrows in south-east Queensland.",
+   "tags": [
+    "LAND"
+   ],
+   "look": "bigspider"
+  },
+  {
+   "name": "Hadronyche formidabilis",
+   "common": "Northern Tree Funnel-web",
+   "group": "Lethal venom or toxin",
+   "note": "Large glossy black funnel-web that lives in tree holes and rotting logs. Capable of severe, potentially fatal envenomation.",
+   "tags": [
+    "LAND"
+   ],
+   "look": "bigspider"
+  },
+  {
+   "name": "Tetractenos hamiltoni",
+   "common": "Common Toadfish",
+   "group": "Lethal venom or toxin",
+   "note": "Small puffer with a pale belly and brown spots that inflates when caught. Deadly if eaten: its flesh holds tetrodotoxin.",
+   "tags": [
+    "WATER",
+    "SEA"
+   ],
+   "look": "fish"
+  },
+  {
+   "name": "Pteropus alecto",
+   "common": "Black Flying-fox",
+   "group": "Lethal disease or allergy",
+   "note": "Large fruit bat with a black body and reddish collar. Can carry Australian bat lyssavirus and Hendra virus, both of which have killed people in Queensland. Never handle a bat unless vaccinated.",
+   "tags": [
+    "LAND"
+   ],
+   "look": "mammal"
+  },
+  {
+   "name": "Aedes aegypti",
+   "common": "Yellow Fever Mosquito",
+   "group": "Lethal disease or allergy",
+   "note": "Small black mosquito with white bands on the legs and a white lyre pattern on the thorax. Spreads dengue in Far North Queensland.",
+   "tags": [
+    "LAND"
+   ],
+   "look": "insect"
+  },
+  {
+   "name": "Culex annulirostris",
+   "common": "Common Banded Mosquito",
+   "group": "Lethal disease or allergy",
+   "note": "Brown mosquito with pale bands on the proboscis and legs. Spreads Japanese encephalitis, Murray Valley encephalitis and Ross River virus.",
+   "tags": [
+    "LAND",
+    "WATER"
+   ],
+   "look": "insect"
+  },
+  {
+   "name": "Apis mellifera",
+   "common": "European Honey Bee",
+   "group": "Lethal disease or allergy",
+   "note": "Brown and black bee with a hairy thorax. Stings cause more deaths in Australia than snakebite, through anaphylaxis in allergic people.",
+   "tags": [
+    "LAND"
+   ],
+   "look": "insect"
+  },
+  {
+   "name": "Synanceia verrucosa",
+   "common": "Reef Stonefish",
+   "group": "Dangerous venom or toxin",
+   "note": "Warty, mottled fish that looks like a rock or coral. Thirteen dorsal spines inject venom when stepped on. Pain is extreme; antivenom exists and no Australian deaths are confirmed.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "fish"
+  },
+  {
+   "name": "Synanceia horrida",
+   "common": "Estuarine Stonefish",
+   "group": "Dangerous venom or toxin",
+   "note": "Lumpy, mud-coloured stonefish of estuaries and seagrass. Wear shoes on tidal flats.",
+   "tags": [
+    "SEA",
+    "WATER"
+   ],
+   "look": "fish"
+  },
+  {
+   "name": "Notesthes robusta",
+   "common": "Bullrout",
+   "group": "Dangerous venom or toxin",
+   "note": "Mottled brown freshwater scorpionfish with venomous dorsal spines. Lurks in rivers and creeks of eastern Queensland.",
+   "tags": [
+    "WATER"
+   ],
+   "look": "fish"
+  },
+  {
+   "name": "Pterois volitans",
+   "common": "Red Lionfish",
+   "group": "Dangerous venom or toxin",
+   "note": "Red and white stripes with long, feathery venomous fin spines. Painful sting; not usually dangerous to life.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "fish"
+  },
+  {
+   "name": "Plotosus lineatus",
+   "common": "Striped Eel Catfish",
+   "group": "Dangerous venom or toxin",
+   "note": "Eel-like catfish with white stripes and whiskers; often in tight schools. Venomous fin spines cause severe pain.",
+   "tags": [
+    "SEA",
+    "WATER"
+   ],
+   "look": "fish"
+  },
+  {
+   "name": "Bathytoshia brevicaudata",
+   "common": "Smooth Stingray",
+   "group": "Dangerous venom or toxin",
+   "note": "Very large grey ray with a serrated barb on the tail. Wounds are painful and can be deep; a chest strike off Batt Reef killed Steve Irwin in 2006, but deaths are rare.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "ray"
+  },
+  {
+   "name": "Physalia utriculus",
+   "common": "Pacific Bluebottle",
+   "group": "Dangerous venom or toxin",
+   "note": "Blue gas-filled float with a single long blue tentacle. The most common sting in Queensland. Painful but rarely serious.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "blue"
+  },
+  {
+   "name": "Morbakka fenneri",
+   "common": "Morbakka",
+   "group": "Dangerous venom or toxin",
+   "note": "Box jelly with a tall, see-through bell and four tentacles. Can cause Irukandji-like symptoms. Found further south than most stingers, including Moreton Bay.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "jelly"
+  },
+  {
+   "name": "Acanthaster solaris",
+   "common": "Crown-of-thorns Starfish",
+   "group": "Dangerous venom or toxin",
+   "note": "Large starfish with many arms covered in long venomous spines. Painful, slow-healing wounds. Eats coral on the Great Barrier Reef.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "reef"
+  },
+  {
+   "name": "Toxopneustes pileolus",
+   "common": "Flower Urchin",
+   "group": "Dangerous venom or toxin",
+   "note": "Short-spined urchin covered in pink or white flower-like pincers that inject venom. Do not handle.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "reef"
+  },
+  {
+   "name": "Millepora platyphylla",
+   "common": "Fire Coral",
+   "group": "Dangerous venom or toxin",
+   "note": "Mustard-yellow coral with white tips. Not a true coral; tiny stinging cells cause burning welts.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "reef"
+  },
+  {
+   "name": "Latrodectus hasselti",
+   "common": "Redback Spider",
+   "group": "Dangerous venom or toxin",
+   "note": "Black spider with a red stripe on the abdomen. Bites cause severe pain and sweating. Deaths stopped after antivenom arrived in 1956.",
+   "tags": [
+    "LAND"
+   ],
+   "look": "webspider"
+  },
+  {
+   "name": "Missulena bradleyi",
+   "common": "Eastern Mouse Spider",
+   "group": "Dangerous venom or toxin",
+   "note": "Stocky, shiny black spider; males have a blue abdomen. Bites are rare but can be serious.",
+   "tags": [
+    "LAND"
+   ],
+   "look": "bigspider"
+  },
+  {
+   "name": "Ixodes holocyclus",
+   "common": "Paralysis Tick",
+   "group": "Dangerous venom or toxin",
+   "note": "Small grey tick with dark legs, especially the front pair. Can cause paralysis, severe allergy and red-meat allergy.",
+   "tags": [
+    "LAND"
+   ],
+   "look": "insect"
+  },
+  {
+   "name": "Myrmecia gulosa",
+   "common": "Red Bull Ant",
+   "group": "Dangerous venom or toxin",
+   "note": "Large ant with a red head and thorax, long jaws and a powerful sting. Anaphylaxis is possible.",
+   "tags": [
+    "LAND"
+   ],
+   "look": "insect"
+  },
+  {
+   "name": "Ethmostigmus rubripes",
+   "common": "Giant Centipede",
+   "group": "Dangerous venom or toxin",
+   "note": "Long, flattened centipede, often orange or blue-green with yellow legs. The bite is extremely painful.",
+   "tags": [
+    "LAND"
+   ],
+   "look": "insect"
+  },
+  {
+   "name": "Ochrogaster lunifer",
+   "common": "Bag-shelter Moth",
+   "group": "Dangerous venom or toxin",
+   "note": "Hairy caterpillars that travel nose-to-tail in processions. Their hairs cause rashes and eye injuries.",
+   "tags": [
+    "LAND"
+   ],
+   "look": "insect"
+  },
+  {
+   "name": "Ornithorhynchus anatinus",
+   "common": "Platypus",
+   "group": "Dangerous venom or toxin",
+   "note": "Duck-billed, furry swimmer. Males have a venomous spur on each hind leg; the pain can last for weeks.",
+   "tags": [
+    "WATER"
+   ],
+   "look": "monotreme"
+  },
+  {
+   "name": "Rhinella marina",
+   "common": "Cane Toad",
+   "group": "Dangerous venom or toxin",
+   "note": "Warty brown toad with large swollen glands behind the head. Toxin can harm human eyes and kills pet dogs. Introduced.",
+   "tags": [
+    "LAND",
+    "WATER"
+   ],
+   "look": "frog"
+  },
+  {
+   "name": "Crocodylus johnstoni",
+   "common": "Freshwater Crocodile",
+   "group": "Dangerous bite, kick or claw",
+   "note": "Long, narrow snout and a row of large scales behind the head. Bites if disturbed but does not hunt people.",
+   "tags": [
+    "WATER"
+   ],
+   "look": "croc"
+  },
+  {
+   "name": "Sus scrofa",
+   "common": "Feral Pig",
+   "group": "Dangerous bite, kick or claw",
+   "note": "Bristly black or brown pig; boars have curved tusks. Charges when cornered. Introduced.",
+   "tags": [
+    "LAND"
+   ],
+   "look": "mammal"
+  },
+  {
+   "name": "Macropus giganteus",
+   "common": "Eastern Grey Kangaroo",
+   "group": "Dangerous bite, kick or claw",
+   "note": "Large grey kangaroo. Big males kick and claw when they feel threatened, especially in suburbs and golf courses.",
+   "tags": [
+    "LAND"
+   ],
+   "look": "mammal"
+  },
+  {
+   "name": "Dromaius novaehollandiae",
+   "common": "Emu",
+   "group": "Dangerous bite, kick or claw",
+   "note": "Tall shaggy brown bird. Kicks forward with powerful, clawed feet.",
+   "tags": [
+    "LAND"
+   ],
+   "look": "bigbird"
+  },
+  {
+   "name": "Gymnorhina tibicen",
+   "common": "Australian Magpie",
+   "group": "Dangerous bite, kick or claw",
+   "note": "Black and white songbird. A few males swoop people in spring and can injure eyes.",
+   "tags": [
+    "LAND"
+   ],
+   "look": "swoop"
+  },
+  {
+   "name": "Varanus varius",
+   "common": "Lace Monitor",
+   "group": "Dangerous bite, kick or claw",
+   "note": "Large dark goanna with pale bands and spots. Sharp claws and a bite that often becomes infected.",
+   "tags": [
+    "LAND"
+   ],
+   "look": "lizard"
+  },
+  {
+   "name": "Orectolobus maculatus",
+   "common": "Spotted Wobbegong",
+   "group": "Dangerous bite, kick or claw",
+   "note": "Flat, carpet-patterned shark with a beard of skin flaps. Bites and holds on when stepped on or grabbed.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "shark"
+  },
+  {
+   "name": "Gymnothorax javanicus",
+   "common": "Giant Moray",
+   "group": "Dangerous bite, kick or claw",
+   "note": "Huge brown moray covered in dark spots. Bites hard when hands go into its crevice.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "fish"
+  },
+  {
+   "name": "Aurelia aurita",
+   "common": "Moon Jellyfish",
+   "group": "Harmless",
+   "note": "Flat, saucer-shaped bell with four pale horseshoe rings and short fringe tentacles. Sting is too weak to notice.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "jelly"
+  },
+  {
+   "name": "Catostylus mosaicus",
+   "common": "Blue Blubber Jellyfish",
+   "group": "Harmless",
+   "note": "Firm, dome-shaped bell, blue to brown, with frilly arms and no long tentacles. Mild sting at most.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "jelly"
+  },
+  {
+   "name": "Cassiopea andromeda",
+   "common": "Upside-down Jellyfish",
+   "group": "Harmless",
+   "note": "Lies upside down on mangrove and seagrass mud with its frilly arms facing up. Very mild sting.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "jelly"
+  },
+  {
+   "name": "Velella velella",
+   "common": "By-the-wind Sailor",
+   "group": "Harmless",
+   "note": "Small blue oval float with a stiff clear sail. Washes up with bluebottles but is harmless.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "blue"
+  },
+  {
+   "name": "Porpita porpita",
+   "common": "Blue Button",
+   "group": "Harmless",
+   "note": "Flat blue disc with a fringe of short blue tentacles. Can irritate sensitive skin but is not dangerous.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "blue"
+  },
+  {
+   "name": "Octopus cyanea",
+   "common": "Day Octopus",
+   "group": "Harmless",
+   "note": "Medium octopus that changes colour and texture fast; no blue rings. Hunts on reef flats by day.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "octopus"
+  },
+  {
+   "name": "Cypraea tigris",
+   "common": "Tiger Cowrie",
+   "group": "Harmless",
+   "note": "Glossy, egg-shaped shell with black spots. Harmless, unlike cone shells.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "shell"
+  },
+  {
+   "name": "Hemiscyllium ocellatum",
+   "common": "Epaulette Shark",
+   "group": "Harmless",
+   "note": "Small, slim bottom shark with a big black spot ringed in white above each pectoral fin. Walks on its fins across reef flats.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "shark"
+  },
+  {
+   "name": "Stegostoma tigrinum",
+   "common": "Zebra Shark",
+   "group": "Harmless",
+   "note": "Adults are pale with dark spots, a long tail and ridges along the body. Docile reef shark.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "shark"
+  },
+  {
+   "name": "Carcharias taurus",
+   "common": "Grey Nurse Shark",
+   "group": "Harmless",
+   "note": "Bulky shark with ragged teeth that show at all times. Looks fierce but is placid.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "shark"
+  },
+  {
+   "name": "Rhincodon typus",
+   "common": "Whale Shark",
+   "group": "Harmless",
+   "note": "The largest fish; checkerboard of white spots and stripes. Filter feeder.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "shark"
+  },
+  {
+   "name": "Mobula alfredi",
+   "common": "Reef Manta Ray",
+   "group": "Harmless",
+   "note": "Huge diamond-shaped ray with head fins and no tail barb. Gentle plankton feeder.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "ray"
+  },
+  {
+   "name": "Dugong dugon",
+   "common": "Dugong",
+   "group": "Harmless",
+   "note": "Grey sea mammal with a fluked tail and a broad downturned snout. Grazes on seagrass.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "seamammal"
+  },
+  {
+   "name": "Heteropoda jugulans",
+   "common": "Brown Huntsman",
+   "group": "Harmless",
+   "note": "Large, flat, leggy brown spider found on walls and in cars. Scary but harmless; the bite may hurt.",
+   "tags": [
+    "LAND"
+   ],
+   "look": "bigspider"
+  },
+  {
+   "name": "Tasmanicosa godeffroyi",
+   "common": "Garden Wolf Spider",
+   "group": "Harmless",
+   "note": "Hairy brown ground spider with a radiating pattern on the back. Not dangerous.",
+   "tags": [
+    "LAND"
+   ],
+   "look": "bigspider"
+  },
+  {
+   "name": "Trichonephila plumipes",
+   "common": "Tropical Golden Orb-weaver",
+   "group": "Harmless",
+   "note": "Long-legged spider with feathery leg tufts and a golden web. Harmless.",
+   "tags": [
+    "LAND"
+   ],
+   "look": "webspider"
+  },
+  {
+   "name": "Lampona cylindrata",
+   "common": "White-tailed Spider",
+   "group": "Harmless",
+   "note": "Slim, dark grey spider with a white tail tip. Claims that its bite causes ulcers are a myth.",
+   "tags": [
+    "LAND"
+   ],
+   "look": "webspider"
+  },
+  {
+   "name": "Vanellus miles",
+   "common": "Masked Lapwing",
+   "group": "Harmless",
+   "note": "Plover with a yellow face mask and wing spurs. Swoops loudly near nests but almost never strikes.",
+   "tags": [
+    "LAND"
+   ],
+   "look": "swoop"
+  },
+  {
+   "name": "Burhinus grallarius",
+   "common": "Bush Stone-curlew",
+   "group": "Harmless",
+   "note": "Tall grey bird with big yellow eyes. Its wailing night call sounds alarming, but it is harmless.",
+   "tags": [
+    "LAND"
+   ],
+   "look": "swoop"
+  },
+  {
+   "name": "Tiliqua scincoides",
+   "common": "Eastern Blue-tongued Lizard",
+   "group": "Harmless",
+   "note": "Stout, banded skink that hisses and flashes a blue tongue. Harmless.",
+   "tags": [
+    "LAND"
+   ],
+   "look": "lizard"
+  },
+  {
+   "name": "Chlamydosaurus kingii",
+   "common": "Frilled Lizard",
+   "group": "Harmless",
+   "note": "Spreads a huge neck frill and gapes when threatened. All show.",
+   "tags": [
+    "LAND"
+   ],
+   "look": "lizard"
+  },
+  {
+   "name": "Intellagama lesueurii",
+   "common": "Eastern Water Dragon",
+   "group": "Harmless",
+   "note": "Big dragon with a dark band behind the eye, common around creeks and parks. Harmless.",
+   "tags": [
+    "LAND",
+    "WATER"
+   ],
+   "look": "lizard"
+  },
+  {
+   "name": "Tachyglossus aculeatus",
+   "common": "Short-beaked Echidna",
+   "group": "Harmless",
+   "note": "Spiny ant-eating monotreme. Unlike the platypus, it has no venom.",
+   "tags": [
+    "LAND"
+   ],
+   "look": "monotreme"
+  },
+  {
+   "name": "Trichosurus vulpecula",
+   "common": "Common Brushtail Possum",
+   "group": "Harmless",
+   "note": "Grey possum with a bushy black tail and pointed ears. Noisy in roofs, harmless.",
+   "tags": [
+    "LAND"
+   ],
+   "look": "mammal"
+  },
+  {
+   "name": "Lates calcarifer",
+   "common": "Barramundi",
+   "group": "Harmless",
+   "note": "Silver fish with a concave forehead and large mouth. Prized table fish, harmless.",
+   "tags": [
+    "WATER",
+    "SEA"
+   ],
+   "look": "fish"
+  },
+  {
+   "name": "Epinephelus lanceolatus",
+   "common": "Giant Grouper",
+   "group": "Harmless",
+   "note": "Massive, mottled grouper of reefs and jetties. Curious and harmless.",
+   "tags": [
+    "SEA"
+   ],
+   "look": "fish"
+  },
+  {
+   "name": "Litoria caerulea",
+   "common": "Green Tree Frog",
+   "group": "Harmless",
+   "note": "Plump, bright green frog with sticky toe pads, often in bathrooms and downpipes. Harmless.",
+   "tags": [
+    "LAND"
+   ],
+   "look": "frog"
+  },
+  {
+   "name": "Limnodynastes tasmaniensis",
+   "common": "Spotted Marsh Frog",
+   "group": "Harmless",
+   "note": "Small frog with dark olive spots and a pale back stripe. Often confused with young cane toads.",
+   "tags": [
+    "WATER"
+   ],
+   "look": "frog"
+  }
+ ]
+}
